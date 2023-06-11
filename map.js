@@ -101,11 +101,32 @@ class MAP {
         return this.mapData[gridPos.y][gridPos.x].includes("s")
     }
 
+    hasRiverAtSide(gridPos) {
+        let sideWithRiver = [];
+        //console.log(gridPos);
+        if(this.mapData[gridPos.y][gridPos.x].includes("t")) sideWithRiver.push("UP");
+        if(this.mapData[gridPos.y][gridPos.x].includes("l")) sideWithRiver.push("LEFT");
+        if(this.mapData[gridPos.y][gridPos.x].includes("b")) sideWithRiver.push("DOWN");
+        if(this.mapData[gridPos.y][gridPos.x].includes("r")) sideWithRiver.push("RIGHT");
+        return sideWithRiver;
+    }
+
+    posOutOfGridSize(pos) {
+       // console.log("out of" + pos, pos.x, pos.y)
+        let outOf = pos.x < 0 || pos.x >= this.mapData[0].length || pos.y < 0 || pos.y >= this.mapData.length;
+        //console.log(outOf);
+        return outOf;
+    }
+
     getMapPosition() {
         return {
             x: this.BORDER_X,
-            y: height - this.img.height + this.BORDER_Y
+            y: this.getRawYPos() + this.BORDER_Y
         };
+    }
+
+    getRawYPos() {
+        return height - this.img.height;
     }
 
 }
