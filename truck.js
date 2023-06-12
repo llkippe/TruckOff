@@ -5,7 +5,7 @@ class TRUCK {
 
         this.pos = gridPos;
 
-        this.maxAllowedMoves = 5;
+        this.maxAllowedMoves = 4;
 
         this.directions = ["UP", "LEFT", "DOWN", "RIGHT"];
 
@@ -34,7 +34,7 @@ class TRUCK {
         return true;
       }
       
-      moveDirection(pos, direction) {
+    moveDirection(pos, direction) {
         let newPos = { ...pos }; // Create a shallow copy of pos
       
         if (direction === "UP") newPos.y -= 1;
@@ -43,45 +43,46 @@ class TRUCK {
         if (direction === "RIGHT") newPos.x += 1;
       
         return newPos;
-      }
+    }
+
+    findPathsToVenues(startPos) {
+        const queue = [];
+        const visited = new Set();
+        const paths = new Map();
+        const venuePaths = new Map();
       
-      getLegalRoutes(currentRoute, timesMoved, legalRoutes) {
-        timesMoved++;
+        // Enqueue the starting position with an empty path
+        queue.push({ pos: startPos, path: [] });
+        visited.add(JSON.stringify(startPos));
       
-        if (timesMoved === this.maxAllowedMoves) {
-          legalRoutes.push([...currentRoute]);
-          console.log(timesMoved + " pushed route" + JSON.stringify(currentRoute));
-          return legalRoutes;
-        } else {
-          for (let i = 0; i < 4; i++) {
-            if (this.moveAllowed(currentRoute[currentRoute.length - 1], this.directions[i])) {
-              
-              let newPos = this.moveDirection(currentRoute[currentRoute.length - 1], this.directions[i]);
-              if (!currentRoute.some(route => route.x == newPos.x && route.y == newPos.y)) {
-                console.log(this.directions[i]);
-                currentRoute.push(newPos);
-                
-                console.log("new ROute" + JSON.stringify(currentRoute));
-                this.getLegalRoutes(currentRoute, timesMoved, legalRoutes);
-                currentRoute.pop(); // Remove the last move from the current route
-                timesMoved--;
-              }
-            }else{
-                console.log(this.directions[i] + " not allowed pos:"+ currentRoute[currentRoute.length - 1].x + currentRoute[currentRoute.length - 1].y);
+        while (queue.length > 0) {
+            const { pos, path } = queue.shift();
+      
+            // check maxiumum moves
+            if(path.length > this.maxAllowedMoves) {
+                console.log("path to long ", pos, path);
+                continue;
             }
-          }
+            // Check if the current position is a venue
+            if (map.isVenue(pos)) { 
+                venuePaths.set(JSON.stringify(pos), path);
+            }
+            if(!paths.has(JSON.stringify(pos))) {
+                paths.set(JSON.stringify(pos), path);
+            }
+
+            for (const dir of this.directions) {
+                const move = this.moveDirection(pos, dir);
+                const moveKey = JSON.stringify(move);
+                    if (!visited.has(moveKey) && this.moveAllowed(pos, dir)) {
+                        visited.add(moveKey);
+                        queue.push({ pos: move, path: [...path, move] });
+                    }
+            }
+        
         }
-      
-        console.log(legalRoutes);
-      
-        timesMoved--;
-        currentRoute.pop(); // Remove the last move from the current route
-      
-        return legalRoutes;
-      }
-      
-      
 
-
-
+        if(venuePaths.size == 0) return paths;
+        else return venuePaths;
+    }
 }

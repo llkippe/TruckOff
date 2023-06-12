@@ -101,6 +101,10 @@ class MAP {
         return this.mapData[gridPos.y][gridPos.x].includes("s")
     }
 
+    isVenue(gridPos) {
+        return false;//this.mapData[gridPos.y][gridPos.x].includes("v");
+    }
+
     hasRiverAtSide(gridPos) {
         let sideWithRiver = [];
         //console.log(gridPos);
