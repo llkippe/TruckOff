@@ -11,36 +11,26 @@ class MAP {
         this.truck = null;
 
         this.markedPos = null;
+        this.truckPaths = null;
         
     }
 
     draw() {
         image(this.img, 0,height - this.img.height);
-        this.drawGrid();
+        //this.drawGrid();
 
         if(this.truck) this.truck.draw();
+        this.drawMarkedPos();
+        this.drawTruckPathLocations();
+    }
+
+    drawMarkedPos() {
         if(this.markedPos) {
             fill(255, 100);
             noStroke();
             let mousePos = this.gridToMousePosition(this.markedPos);
             circle(mousePos.x + this.GRID_SIZE/2,mousePos.y + this.GRID_SIZE/2, this.GRID_SIZE);
         }
-    }
-
-    createMapData() {
-        let mapData = [
-            ['s',' ',' ',' ',' ','v',' ','vr','wlb',' '],
-            [' ','v',' ',' ','v',' ',' ',' ','vtbr',' '],
-            [' ',' ','vb','v',' ',' ','v',' ','t',' '],
-            ['vr','lb','vtbr','vl',' ',' ','v','r','vlb',' '],
-            [' ','tb','vtb','b','b','vb',' ','v','tr','vlb'],
-            ['vb','t','t','vt','t','vtr','vl',' ',' ','t'],
-            ['vt',' ',' ',' ',' ','vr','l',' ',' ',' '],
-            [' ',' ',' ','vb','b','vr','l','v',' ','v'],
-            ['v','v','r','wtlb','tb','br','vl',' ','v','v'],
-            ['s',' ',' ','vt','t','vt',' ',' ','r','sl'],
-        ]
-        return mapData;
     }
 
     drawGrid() {
@@ -54,20 +44,67 @@ class MAP {
         }
     }
 
+    drawTruckPathLocations() {
+        if(this.truckPaths) {
+            for (const [key, value] of this.truckPaths.entries()) {
+                fill(200, 200, 255, 170);
+                noStroke();
+                let mousePos = this.gridToMousePosition(value[value.length-1]);
+                circle(mousePos.x + this.GRID_SIZE/2,mousePos.y + this.GRID_SIZE/2, this.GRID_SIZE/2);
+            }
+        }
+    }
+
+
+
+
+
+    createMapData() {
+        let mapData = [
+            ['s',' ',' ',' ',' ','vd',' ','vy4','vw23',' '],
+            [' ','vp',' ',' ','vg',' ',' ',' ','vr134',' '],
+            [' ',' ','vb3','vy',' ',' ','vb',' ','1',' '],
+            ['vp4','23','vr134','vg2',' ',' ','vg','4','vb23',' '],
+            [' ','13','vp13','3','3','vy3',' ','vp','14','vd23'],
+            ['vd3','1','1','vb1','1','vy14','v2',' ',' ','1'],
+            ['vr1',' ',' ',' ',' ','vp4','2',' ',' ',' '],
+            [' ',' ',' ','vg3','3','vr4','2','vb',' ','vy'],
+            ['vp','vy','4','vw123','13','34','vg2',' ','vr','vp'],
+            ['s',' ',' ','vy1','1','vd1',' ',' ','4','s2'],
+        ]
+        return mapData;
+    }
+
+    
+
     // mouse aswell as touch position
     handleInput(mouseX, mouseY) {
         let gridPos =  this.mouseToGridPosition(mouseX, mouseY);
         if(gamestate == "chose starting position") this.choseStartingPosition(gridPos);
-        
+        if(gamestate == "move truck") this.moveTruck(gridPos);
     }
 
     choseStartingPosition(gridPos) {
         if(this.isStartingPosition(gridPos)) {
-            console.log(this.markedPos, gridPos)
             if(JSON.stringify(gridPos) === JSON.stringify(this.markedPos)) {
                 this.truck = new TRUCK(truckImg, gridPos);
                 this.markedPos = null;
-                gamestate = "roll dice";
+                dice.rollingDiceInit();
+            }else this.markedPos = gridPos;
+        }
+    }
+
+    moveTruckInit() {
+        gamestate = "move truck";
+        this.truckPaths = this.truck.findPathsToVenues(this.truck.pos);
+    }
+    moveTruck(gridPos) {
+        if(this.isTruckPathPosition(gridPos)) {
+            if(JSON.stringify(gridPos) === JSON.stringify(this.markedPos)) {
+                this.truck.moveTruck(this.truckPaths.get(JSON.stringify(gridPos)));
+                this.markedPos = null;
+                this.truckPaths = null;
+                routeTracker.routeTrackingInit(this.getVenueType(gridPos));
             }else this.markedPos = gridPos;
         }
     }
@@ -102,23 +139,36 @@ class MAP {
     }
 
     isVenue(gridPos) {
-        return false;//this.mapData[gridPos.y][gridPos.x].includes("v");
+        return this.mapData[gridPos.y][gridPos.x].includes("v") ; // wild venues
+    }
+
+    getVenueType(gridPos) {
+        if(!this.isVenue(gridPos)) return null;
+        if(this.mapData[gridPos.y][gridPos.x].includes("p")) return {color: "purple", id: 0};
+        if(this.mapData[gridPos.y][gridPos.x].includes("y")) return {color: "yellow", id: 1};
+        if(this.mapData[gridPos.y][gridPos.x].includes("g")) return {color: "green", id: 2};
+        if(this.mapData[gridPos.y][gridPos.x].includes("b")) return {color: "blue", id: 3};
+        if(this.mapData[gridPos.y][gridPos.x].includes("r")) return {color: "red", id: 4};
+        if(this.mapData[gridPos.y][gridPos.x].includes("g")) return {color: "gray", id: 5};
+        if(this.mapData[gridPos.y][gridPos.x].includes("")) return {color: "wild", id: 6};
+    }
+
+    isTruckPathPosition(gridPos) {
+        if(this.truckPaths == null) return false;
+        return this.truckPaths.has(JSON.stringify(gridPos));
     }
 
     hasRiverAtSide(gridPos) {
         let sideWithRiver = [];
-        //console.log(gridPos);
-        if(this.mapData[gridPos.y][gridPos.x].includes("t")) sideWithRiver.push("UP");
-        if(this.mapData[gridPos.y][gridPos.x].includes("l")) sideWithRiver.push("LEFT");
-        if(this.mapData[gridPos.y][gridPos.x].includes("b")) sideWithRiver.push("DOWN");
-        if(this.mapData[gridPos.y][gridPos.x].includes("r")) sideWithRiver.push("RIGHT");
+        if(this.mapData[gridPos.y][gridPos.x].includes("1")) sideWithRiver.push("UP");
+        if(this.mapData[gridPos.y][gridPos.x].includes("2")) sideWithRiver.push("LEFT");
+        if(this.mapData[gridPos.y][gridPos.x].includes("3")) sideWithRiver.push("DOWN");
+        if(this.mapData[gridPos.y][gridPos.x].includes("4")) sideWithRiver.push("RIGHT");
         return sideWithRiver;
     }
 
     posOutOfGridSize(pos) {
-       // console.log("out of" + pos, pos.x, pos.y)
         let outOf = pos.x < 0 || pos.x >= this.mapData[0].length || pos.y < 0 || pos.y >= this.mapData.length;
-        //console.log(outOf);
         return outOf;
     }
 

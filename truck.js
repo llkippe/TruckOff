@@ -17,19 +17,16 @@ class TRUCK {
         image(this.img, mousePos.x,mousePos.y);
     }
 
+    moveTruck(path) {
+        this.pos = path[path.length-1];
+    }
+
     moveAllowed(pos, direction) {
-        console.log(pos, direction);
-      
         if (map.hasRiverAtSide(pos).includes(direction)) return false;
-        // console.log("river")
         if (direction === "UP" && map.posOutOfGridSize({x: pos.x, y: pos.y-1})) return false;
-        // console.log("up")
         if (direction === "LEFT" && map.posOutOfGridSize({x: pos.x-1, y: pos.y})) return false;
-        // console.log("left")
         if (direction === "DOWN" && map.posOutOfGridSize({x: pos.x, y: pos.y+1})) return false;
-        // console.log("down")
         if (direction === "RIGHT" && map.posOutOfGridSize({x: pos.x+1, y: pos.y})) return false;
-        // console.log("right")
       
         return true;
       }
@@ -59,16 +56,15 @@ class TRUCK {
             const { pos, path } = queue.shift();
       
             // check maxiumum moves
-            if(path.length > this.maxAllowedMoves) {
-                console.log("path to long ", pos, path);
-                continue;
-            }
+            if(path.length > this.maxAllowedMoves) continue;
+
             // Check if the current position is a venue
             if (map.isVenue(pos)) { 
                 venuePaths.set(JSON.stringify(pos), path);
             }
             if(!paths.has(JSON.stringify(pos))) {
                 paths.set(JSON.stringify(pos), path);
+                
             }
 
             for (const dir of this.directions) {
@@ -85,4 +81,6 @@ class TRUCK {
         if(venuePaths.size == 0) return paths;
         else return venuePaths;
     }
+
+    
 }
