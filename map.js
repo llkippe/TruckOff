@@ -46,6 +46,7 @@ class MAP {
 
     drawTruckPathLocations() {
         if(this.truckPaths) {
+            
             for (const [key, value] of this.truckPaths.entries()) {
                 fill(200, 200, 255, 170);
                 noStroke();
@@ -150,7 +151,7 @@ class MAP {
         if(this.mapData[gridPos.y][gridPos.x].includes("b")) return {color: "blue", id: 3};
         if(this.mapData[gridPos.y][gridPos.x].includes("r")) return {color: "red", id: 4};
         if(this.mapData[gridPos.y][gridPos.x].includes("g")) return {color: "gray", id: 5};
-        if(this.mapData[gridPos.y][gridPos.x].includes("")) return {color: "wild", id: 6};
+        if(this.mapData[gridPos.y][gridPos.x].includes("w")) return {color: "wild", id: 6};
     }
 
     isTruckPathPosition(gridPos) {

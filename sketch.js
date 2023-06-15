@@ -53,5 +53,6 @@ function initGame() {
 function touchEnded() {
   map.handleInput(mouseX, mouseY);
   if(gamestate == "rolling dice") dice.handleInput(mouseX, mouseY);
+  if(gamestate == "route tracking") routeTracker.handleInput(mouseX,mouseY);
   event.preventDefault();
 }
