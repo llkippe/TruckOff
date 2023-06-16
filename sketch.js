@@ -16,6 +16,10 @@ let routeTracker;
 
 let gamestate = "chose starting position";
 
+
+let animation;
+
+
 function preload() {
   mapImg = loadImage("/imgs/map2.png");
   truckImg = loadImage("/imgs/Trucks-08.png");
@@ -39,7 +43,6 @@ function draw() {
   routeTracker.draw();
   map.draw();
   dice.draw();
-  
 
 }
 
@@ -56,3 +59,9 @@ function touchEnded() {
   if(gamestate == "route tracking") routeTracker.handleInput(mouseX,mouseY);
   event.preventDefault();
 }
+
+
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+

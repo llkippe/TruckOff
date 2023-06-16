@@ -96,8 +96,8 @@ class MAP {
     }
 
     moveTruckInit() {
-        gamestate = "move truck";
         this.truckPaths = this.truck.findPathsToVenues(this.truck.pos);
+        gamestate = "move truck";
     }
     moveTruck(gridPos) {
         if(this.isTruckPathPosition(gridPos)) {

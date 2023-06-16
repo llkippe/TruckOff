@@ -4,21 +4,61 @@ class TRUCK {
         this.img.resize(map.GRID_SIZE, map.GRID_SIZE);
 
         this.pos = gridPos;
-
         this.maxAllowedMoves = 4;
-
         this.directions = ["UP", "LEFT", "DOWN", "RIGHT"];
+
+        this.animation = null;
+        this.animPath = null;
 
     }
 
     draw() {
-        let mousePos = map.gridToMousePosition(this.pos);
+        let mousePos = this.getAnimatedTruckPos();
+        if(mousePos == null) mousePos = map.gridToMousePosition(this.pos);
         
         image(this.img, mousePos.x,mousePos.y);
     }
 
+    getAnimatedTruckPos() {
+        if (this.animPath && this.animation) {
+          let animT = this.animation.getAnimationTime();
+      
+          const segmentCount = this.animPath.length - 1; // Number of segments in the path
+          const segmentIndex = Math.floor(animT * segmentCount); // Index of the current segment
+          const t = animT * segmentCount - segmentIndex; // Interpolation factor within the current segment
+
+          console.log(segmentIndex, t, animT);
+      
+          const pos0 = map.gridToMousePosition(this.animPath[segmentIndex]);
+          const pos1 = map.gridToMousePosition(this.animPath[segmentIndex + 1]);
+      
+          // Perform linear interpolation between pos0 and pos1 using t
+          const x = lerp(pos0.x, pos1.x, t);
+          const y = lerp(pos0.y, pos1.y, t);
+      
+          if (animT >= 1) {
+            //this.animation = null;
+            //this.animPath = null;
+            return null;
+          }
+      
+          return { x, y };
+        }
+      
+        return null;
+      }
+      
+
+
+
     moveTruck(path) {
+        this.animPath = path;
+        this.animPath.unshift(this.pos);
+        this.animation = new ANIMATION(3, 0, null);
+
+
         this.pos = path[path.length-1];
+        
     }
 
     moveAllowed(pos, direction) {
@@ -77,6 +117,10 @@ class TRUCK {
             }
         
         }
+
+        venuePaths.delete(JSON.stringify(this.pos));
+        paths.delete(JSON.stringify(this.pos));
+
 
         if(venuePaths.size == 0) return paths;
         else return venuePaths;

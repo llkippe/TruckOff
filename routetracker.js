@@ -52,7 +52,7 @@ class ROUTETRACKER {
         if(venueType == null) {
             this.trackerData[this.trackerPos.y][this.trackerPos.x] = 'X';
             this.moveTracker();
-            map.moveTruckInit();
+            dice.rollingDiceInit();
             return;
         }
 
@@ -64,7 +64,7 @@ class ROUTETRACKER {
             if(venueType.id == this.trackerPos.x) {
                 this.trackerData[this.trackerPos.y][this.trackerPos.x] = dice.numbers[this.trackerPos.x];
                 this.moveTracker();
-                map.moveTruckInit();
+                dice.rollingDiceInit();
                 break;
             }
 
