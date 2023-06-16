@@ -105,7 +105,6 @@ class MAP {
                 this.truck.moveTruck(this.truckPaths.get(JSON.stringify(gridPos)));
                 this.markedPos = null;
                 this.truckPaths = null;
-                routeTracker.routeTrackingInit(this.getVenueType(gridPos));
             }else this.markedPos = gridPos;
         }
     }

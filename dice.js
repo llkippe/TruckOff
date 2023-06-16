@@ -15,10 +15,16 @@ class DICE {
 
         this.diceRerolled = 0;
         this.availableRerolls = 1;
+
+        this.animation = null;
+        this.previousStep = 0;
+        this.stepSize = 20
+        this.diceToReroll = 0;
+        this.animationDuration = 1;
     }
 
     draw() {
-        fill(255);
+        fill(225,224,213);
         rect(this.pos.x, this.pos.y, this.width, this.height);
 
         for (let i = 0; i < this.imgs.length; i++) {
@@ -27,13 +33,41 @@ class DICE {
     }
 
     drawDice(dice, number) {
+        if(this.animation && (gamestate == "rolling dice" || gamestate == "rerolling dice")) {
+            const animT = this.animation.getAnimationTime();
+            const currentStep = Math.floor(animT * this.stepSize) / this.stepSize;
+            if (currentStep > this.previousStep) {
+                if(gamestate == "rolling dice") this.rollAllDice();
+                else {
+                    this.rollDice(this.diceToReroll);
+                }
+                this.previousStep = currentStep; // Update the previous mark
+            }
+
+            if(animT >= 1) {
+                this.animation = null;
+                this.previousStep = 0;
+                if(gamestate == "rolling dice") {
+                    gamestate = "rerolling dice";
+                }
+                else {
+                    this.diceRerolled++;
+                    if(this.diceRerolled == this.availableRerolls) map.moveTruckInit();
+                }
+            }
+        }
+
+
         let dicePos = this.getMousePosOfDice(dice);
         image(this.imgs[dice], dicePos.x, dicePos.y, this.height, this.height);
         // Calculate the center position of the current image
         let centerX = dicePos.x + this.height / 2;
         let centerY = dicePos.y + this.height / 2;
 
+        if(dice == 0) centerY += 6;
+
         noStroke();
+        fill(0);
         textAlign(CENTER, CENTER); // Center the text horizontally and vertically
         textSize(44); // Adjust the font size as needed
         text(number, centerX, centerY);
@@ -47,12 +81,12 @@ class DICE {
     
     rollingDiceInit() {
         gamestate = "rolling dice";
-        this.rollAllDice();
+        this.animation = new ANIMATION(this.animationDuration,0,"easeOutCubic");
+        this.diceRerolled = 0;
     }
 
     rollAllDice() {
         for(let i = 0; i < 6; i++) this.rollDice(i);
-        this.diceRerolled = 0;
     }
 
     rollDice(dice) {
@@ -67,9 +101,8 @@ class DICE {
     handleInput(mouseX, mouseY) {
         let dice = this.collisionWithDice(mouseX, mouseY);
         if(dice != null) {
-            this.rollDice(dice);
-            this.diceRerolled++;
-            if(this.diceRerolled == this.availableRerolls) map.moveTruckInit();
+            this.animation = new ANIMATION(this.animationDuration,0,"easeOutCubic");
+            this.diceToReroll = dice;
         }
     }
 
