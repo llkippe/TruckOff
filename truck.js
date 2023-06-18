@@ -54,6 +54,8 @@ class TRUCK {
 
                 return { x, y, fromPosX: pos0.x, fromPosY: pos0.y};
             }else {
+                routeTracker.routeTrackingInit(map.getVenueType(this.pos));
+
                 const fromPos = map.gridToMousePosition(this.animPath[this.lastSegmentIndex]);
                 const toPos = map.gridToMousePosition(this.animPath[segmentIndex]);
                 map.truckLines.push({fromPos, toPos});
@@ -67,7 +69,7 @@ class TRUCK {
                 
 
                 this.lastSegmentIndex = 0;
-                routeTracker.routeTrackingInit(map.getVenueType(this.pos));
+                
             }
         }
 
@@ -79,7 +81,7 @@ class TRUCK {
     moveTruck(path) {
         this.animPath = path;
         this.animPath.unshift(this.pos);
-        this.animation = new ANIMATION(3, 0, "easeInOutSin");
+        this.animation = new ANIMATION(3 * ANIMATION_TIME, 0, "easeInOutSin");
 
 
         this.pos = path[path.length - 1];

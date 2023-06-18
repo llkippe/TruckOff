@@ -1,9 +1,26 @@
 /*
-  - fix route tracker
-  - add venue promotions
-  - add bonuses
-  - add bridge
+- add bonus check
+- add myt
+- add reroll
+- add +1 mov
+- add 2x
+- add gas
+- add bridge
+
+
+- add promotions
+- fix route tracker
+
+- add game end check
+- add scoring
+
+- add menue
+
+
+
 */
+
+const ANIMATION_TIME = 0.1;
 
 let fontReg;
 let fontRegCom;

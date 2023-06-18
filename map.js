@@ -181,7 +181,7 @@ class MAP {
     }
 
     getVenueType(gridPos) {
-        if(!this.isVenue(gridPos)) return null;
+        if(!this.isActiveVenue(gridPos)) return null;
         if(this.mapData[gridPos.y][gridPos.x].includes("p")) return {color: "purple", id: 0};
         if(this.mapData[gridPos.y][gridPos.x].includes("y")) return {color: "yellow", id: 1};
         if(this.mapData[gridPos.y][gridPos.x].includes("g")) return {color: "green", id: 2};

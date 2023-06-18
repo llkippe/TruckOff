@@ -20,10 +20,11 @@ class DICE {
         this.previousStep = 0;
         this.stepSize = 20
         this.diceToReroll = 0;
-        this.animationDuration = 1;
+        this.animationDuration = 2;
     }
 
     draw() {
+        noStroke();
         fill(225,224,213);
         rect(this.pos.x, this.pos.y, this.width, this.height);
 
@@ -81,7 +82,7 @@ class DICE {
     
     rollingDiceInit() {
         gamestate = "rolling dice";
-        this.animation = new ANIMATION(this.animationDuration,0,"easeOutCubic");
+        this.animation = new ANIMATION(this.animationDuration * ANIMATION_TIME,0,"easeOutCubic");
         this.diceRerolled = 0;
     }
 
@@ -101,7 +102,7 @@ class DICE {
     handleInput(mouseX, mouseY) {
         let dice = this.collisionWithDice(mouseX, mouseY);
         if(dice != null) {
-            this.animation = new ANIMATION(this.animationDuration,0,"easeOutCubic");
+            this.animation = new ANIMATION(this.animationDuration * ANIMATION_TIME,0,"easeOutCubic");
             this.diceToReroll = dice;
         }
     }

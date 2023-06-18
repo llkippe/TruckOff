@@ -72,7 +72,7 @@ class ROUTETRACKER {
     getTrackerData() {
         let data = [];
         for(let i = 0; i < 6; i++) {
-            data[i] = [];
+            data[i] = [' ',' ',' ',' ',' ',' '];
         }
         return data;
     }
@@ -92,6 +92,7 @@ class ROUTETRACKER {
     updateRouteTracker(venueType) {
         if(venueType == null) {
             this.trackerData[this.trackerPos.y][this.trackerPos.x] = 'X';
+            this.checkBonus(this.trackerPos);
             this.moveTracker();
             dice.rollingDiceInit();
             return;
@@ -104,6 +105,8 @@ class ROUTETRACKER {
         while(this.trackerPos.y < 6) {
             if(venueType.id == this.trackerPos.x) {
                 this.trackerData[this.trackerPos.y][this.trackerPos.x] = dice.numbers[this.trackerPos.x];
+                console.log("hae")
+                this.checkBonus(this.trackerPos);
                 this.moveTracker();
                 dice.rollingDiceInit();
                 break;
@@ -113,6 +116,29 @@ class ROUTETRACKER {
         }
     }
 
+    checkBonus(trackerPos) {
+        console.log("dumm oder so")
+        let count = 0;
+        for(let x = 0; x < 6; x++) {
+            if(this.trackerData[trackerPos.y][x] != ' ') count++; 
+        }
+        if(count == 3) {
+
+        }
+        console.log(count, 3);
+        count = 0;
+
+        for(let y = 0; y < 6; y++) {
+            if(this.trackerData[y][trackerPos.x] != ' ') count++; 
+        }
+        if(count == 3) // go go go
+        console.log(count);
+        console.log("dumm oder so2")
+    }
+
+    newBonus(trackerPos){
+        console.log(trackerPos, " das muss passieren")
+    }
 
 
     moveTracker() {
