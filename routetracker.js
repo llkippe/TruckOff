@@ -21,7 +21,9 @@ class ROUTETRACKER {
 
     draw() {
         fill(68, 52, 123);
+        noStroke();
         rect(0,0,this.width,this.height);
+        
 
         this.drawRouteTracker();
         this.drawVenuePromos();

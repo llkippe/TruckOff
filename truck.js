@@ -9,11 +9,18 @@ class TRUCK {
 
         this.animation = null;
         this.animPath = null;
+        this.lastSegmentIndex = 0;
 
     }
 
     draw() {
         let mousePos = this.getAnimatedTruckPos();
+        if(mousePos) {
+            stroke(0)
+            strokeWeight(5);
+            line(mousePos.x + map.GRID_SIZE/2,mousePos.y+ map.GRID_SIZE/2,mousePos.fromPosX+ map.GRID_SIZE/2,mousePos.fromPosY+ map.GRID_SIZE/2);
+        }
+
         if (mousePos == null) mousePos = map.gridToMousePosition(this.pos);
 
         image(this.img, mousePos.x, mousePos.y);
@@ -23,10 +30,19 @@ class TRUCK {
         if (this.animPath && this.animation) {
             let animT = this.animation.getAnimationTime();
 
+            const segmentCount = this.animPath.length - 1; // Number of segments in the path
+            const segmentIndex = Math.floor(animT * segmentCount); // Index of the current segment
+
             if (animT < 1) {
 
-                const segmentCount = this.animPath.length - 1; // Number of segments in the path
-                const segmentIndex = Math.floor(animT * segmentCount); // Index of the current segment
+                
+                if(this.lastSegmentIndex != segmentIndex) { // update truck lines on map
+                    const fromPos = map.gridToMousePosition(this.animPath[this.lastSegmentIndex]);
+                    const toPos = map.gridToMousePosition(this.animPath[segmentIndex]);
+                    map.truckLines.push({fromPos, toPos});
+
+                    this.lastSegmentIndex = segmentIndex
+                }
                 const t = animT * segmentCount - segmentIndex; // Interpolation factor within the current segment
 
                 const pos0 = map.gridToMousePosition(this.animPath[segmentIndex]);
@@ -36,17 +52,27 @@ class TRUCK {
                 const x = lerp(pos0.x, pos1.x, t);
                 const y = lerp(pos0.y, pos1.y, t);
 
-                return { x, y };
+                return { x, y, fromPosX: pos0.x, fromPosY: pos0.y};
             }else {
+                const fromPos = map.gridToMousePosition(this.animPath[this.lastSegmentIndex]);
+                const toPos = map.gridToMousePosition(this.animPath[segmentIndex]);
+                map.truckLines.push({fromPos, toPos});
+
+                for(let i = 0; i < this.animPath.length; i++) {
+                    map.closeVenue(this.animPath[i]);
+                }
+
                 this.animPath = null;
                 this.animation = null;
+                
+
+                this.lastSegmentIndex = 0;
                 routeTracker.routeTrackingInit(map.getVenueType(this.pos));
             }
         }
 
         return null;
     }
-
 
 
 
@@ -97,12 +123,13 @@ class TRUCK {
             if (path.length > this.maxAllowedMoves) continue;
 
             // Check if the current position is a venue
-            if (map.isVenue(pos)) {
-                venuePaths.set(JSON.stringify(pos), path);
+            if (map.isActiveVenue(pos)) {
+                if(!(this.isPathOverActiveVenue(path) && venuePaths.has(JSON.stringify(pos)))) {
+                    venuePaths.set(JSON.stringify(pos), path);
+                }
             }
             if (!paths.has(JSON.stringify(pos))) {
                 paths.set(JSON.stringify(pos), path);
-
             }
 
             for (const dir of this.directions) {
@@ -120,9 +147,16 @@ class TRUCK {
         paths.delete(JSON.stringify(this.pos));
 
 
+
         if (venuePaths.size == 0) return paths;
         else return venuePaths;
     }
 
+    isPathOverActiveVenue(path) {
+        for(let i = 0; i < path.length; i++){
+            if(!map.isActiveVenue(path[i]) && map.isVenue(path[i])) return true;
+        }
+        return false;
+    }
 
 }

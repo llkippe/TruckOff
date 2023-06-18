@@ -1,8 +1,4 @@
 /*
-- add venues moved over  
-- add truck drawings
-  - add warning when moving over venue
-  
   - fix route tracker
   - add venue promotions
   - add bonuses
