@@ -17,6 +17,8 @@ class ROUTETRACKER {
 
         this.trackerData = this.getTrackerData();
         this.trackerPos = {x: 0, y: 0};
+
+        this.bonuses = [];
     }
 
     draw() {
@@ -28,6 +30,7 @@ class ROUTETRACKER {
         this.drawRouteTracker();
         this.drawVenuePromos();
         drawGradientRect(0, this.height - 20, this.width, 20, color(68, 52, 123), color(225,224,213));
+
 
         
     }
@@ -58,6 +61,12 @@ class ROUTETRACKER {
                 if(mousePos.x == 0) mousePos.y += 5 * this.scale;
                 if(this.trackerData[y][x]) text(this.trackerData[y][x], mousePos.x, mousePos.y);
             }
+        }
+    }
+
+    drawActiveBonus() {
+        if(this.bonuses.length > 0) {
+            this.bonuses[0].draw();
         }
     }
 
@@ -92,7 +101,7 @@ class ROUTETRACKER {
     updateRouteTracker(venueType) {
         if(venueType == null) {
             this.trackerData[this.trackerPos.y][this.trackerPos.x] = 'X';
-            this.checkBonus(this.trackerPos);
+            this.handleBonusesInit(this.trackerPos);
             this.moveTracker();
             dice.rollingDiceInit();
             return;
@@ -105,10 +114,9 @@ class ROUTETRACKER {
         while(this.trackerPos.y < 6) {
             if(venueType.id == this.trackerPos.x) {
                 this.trackerData[this.trackerPos.y][this.trackerPos.x] = dice.numbers[this.trackerPos.x];
-                console.log("hae")
-                this.checkBonus(this.trackerPos);
+                this.handleBonusesInit(this.trackerPos);
                 this.moveTracker();
-                dice.rollingDiceInit();
+                if(gamestate == "route tracking") dice.rollingDiceInit(); // and gamestate != "handle bonuses"
                 break;
             }
 
@@ -116,30 +124,55 @@ class ROUTETRACKER {
         }
     }
 
-    checkBonus(trackerPos) {
-        console.log("dumm oder so")
+    handleBonusesInit(trackerPos) {
         let count = 0;
         for(let x = 0; x < 6; x++) {
             if(this.trackerData[trackerPos.y][x] != ' ') count++; 
         }
         if(count == 3) {
-
+            this.addBonusForRow(trackerPos.y);
+            console.log(trackerPos.y, this.bonuses);
+            gamestate = "handle bonuses";
         }
-        console.log(count, 3);
         count = 0;
 
         for(let y = 0; y < 6; y++) {
             if(this.trackerData[y][trackerPos.x] != ' ') count++; 
         }
-        if(count == 3) // go go go
-        console.log(count);
-        console.log("dumm oder so2")
+        if(count == 3) {
+            this.addBonusForCol(trackerPos.x);
+            console.log(trackerPos.y, this.bonuses);
+            gamestate = "handle bonuses";
+        }
     }
 
-    newBonus(trackerPos){
-        console.log(trackerPos, " das muss passieren")
+    handleBonusInput(mouseX, mouseY) {
+        this.bonuses[0].handleInput(mouseX,mouseY);
     }
 
+    removeFirstBonus() {
+        this.bonuses.shift();
+        console.log("removed first", this.bonuses);
+        if(this.bonuses.length == 0) dice.rollingDiceInit();
+    }
+
+    addBonusForRow(y) {
+        if(y == 0) this.bonuses.push(new BRIDGE_BONUS());
+        else if(y == 1) this.bonuses.push(new PROMOTE_VENUE_BONUS());
+        else if(y == 2) this.bonuses.push(new GAS_BONUS());
+        else if(y == 3) this.bonuses.push(new TWOTIMES_BONUS());
+        else if(y == 4) this.bonuses.push(new MOVESTART_BONUS());
+        else if(y == 5) this.bonuses.push(new FIVEDOLLAR_BONUS());
+         
+    }
+    addBonusForCol(x) {
+        if(x == 0) this.bonuses.push(new PROMOTE_VENUE_BONUS());
+        else if(x == 1) this.bonuses.push(new GAS_BONUS);
+        else if(x == 2) this.bonuses.push(new TWOTIMES_BONUS());
+        else if(x == 3) this.bonuses.push(new MOVEMENT_BONUS());
+        else if(x == 4) this.bonuses.push(new REROLL_BONUS());
+        else if(x == 5) this.bonuses.push(new BRIDGE_BONUS());  
+    }
 
     moveTracker() {
         if(this.trackerPos.y % 2 == 0) this.trackerPos.x++;

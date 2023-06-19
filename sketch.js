@@ -1,5 +1,6 @@
 /*
-- add bonus check
+- fix which routes are selected 
+
 - add myt
 - add reroll
 - add +1 mov
@@ -20,7 +21,7 @@
 
 */
 
-const ANIMATION_TIME = 0.1;
+const ANIMATION_TIME = 0.2;
 
 let fontReg;
 let fontRegCom;
@@ -40,10 +41,20 @@ let diceImg12;
 let diceImg20;
 let dice;
 
-let routeTrackerImg;
+let bridgeBonusImg;
+let gasBonusImg;
+let twotimesBonusImg;
+let promoteVenueBonusImg;
+let movementBonusImg;
+let rerollBonusImg;
+let movestartBonusImg;
+let fivedollarBonusImg;
+
 let venuePromo6Img;
 let venuePromo4Img;
 let venuePromo3Img;
+
+let routeTrackerImg;
 let routeTracker;
 
 let gamestate = "chose starting position";
@@ -70,7 +81,14 @@ function preload() {
   venuePromo3Img = loadImage("/imgs/venuePromo3.png");
   venuePromo4Img = loadImage("/imgs/venuePromo4.png");
   venuePromo6Img = loadImage("/imgs/venuePromo6.png");
-
+  bridgeBonusImg = loadImage("/imgs/Draw a bridge.png");
+  gasBonusImg = loadImage("/imgs/Draw a gas station.png");
+  twotimesBonusImg = loadImage("/imgs/Draw a x2 on a venue.png");
+  promoteVenueBonusImg = loadImage("/imgs/Promote a venue.png");
+  movementBonusImg = loadImage("/imgs/Move your truck.png");
+  rerollBonusImg = loadImage("/imgs/Reroll up to two dice.png");
+  movestartBonusImg = loadImage("/imgs/Move your truck.png");
+  fivedollarBonusImg = loadImage("/imgs/Bonus - 5pts.png");
 }
 
 
@@ -84,7 +102,9 @@ function draw() {
   routeTracker.draw();
   map.draw();
   dice.draw();
-  
+  routeTracker.drawActiveBonus();
+
+ 
 }
 
 
@@ -99,6 +119,7 @@ function touchEnded() {
   map.handleInput(mouseX, mouseY);
   if(gamestate == "rerolling dice") dice.handleInput(mouseX, mouseY);
   if(gamestate == "route tracking") routeTracker.handleInput(mouseX,mouseY);
+  if(gamestate == "handle bonuses") routeTracker.handleBonusInput(mouseX, mouseY);
   event.preventDefault();
 }
 
