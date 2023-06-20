@@ -65,7 +65,34 @@ class BRIDGE_BONUS extends BONUS {
 
 class GAS_BONUS extends BONUS {
     constructor() {
-        super(gasBonusImg);
+        super(bridgeBonusImg);
+        this.selectedPos = null
+    }
+
+    handleInput(mouseX, mouseY) {
+        const gridPos = map.mouseToGridPosition(mouseX, mouseY);
+        console.log(gridPos);
+        if(!map.posInGrid(gridPos)) return;
+
+        if(this.selectedPos == null || JSON.stringify(this.selectedPos) != JSON.stringify(gridPos)) {
+            if(!map.isVenue(gridPos)) this.selectedPos = gridPos;
+            return;
+        }
+
+        if(!map.isVenue(gridPos)) {
+            console.log(this.selectedPos, gridPos);
+            routeTracker.removeFirstBonus();
+            return;
+        }
+
+        if(!map.isVenue(gridPos)) this.selectedPos = gridPos;
+    }
+
+    act() {
+        if(this.selectedPos) {
+            const mousePos = map.gridToMousePosition(this.selectedPos);
+            circle(mousePos.x,mousePos.y,30);
+        }
     }
 }
 
@@ -94,7 +121,35 @@ class REROLL_BONUS extends BONUS {
 }
 class MOVESTART_BONUS extends BONUS {
     constructor() {
-        super(movestartBonusImg);
+        super(bridgeBonusImg);
+        this.selectedPos = null
+    }
+
+    handleInput(mouseX, mouseY) {
+        const gridPos = map.mouseToGridPosition(mouseX, mouseY);
+        console.log(gridPos);
+        if(!map.posInGrid(gridPos)) return;
+
+        if(this.selectedPos == null || JSON.stringify(this.selectedPos) != JSON.stringify(gridPos)) {
+            if(map.isStartingPosition(gridPos)) this.selectedPos = gridPos;
+            return;
+        }
+
+        if(map.isStartingPosition(gridPos)) {
+            console.log(this.selectedPos, gridPos);
+            map.truck.pos = gridPos;
+            routeTracker.removeFirstBonus();
+            return;
+        }
+
+        if(map.isStartingPosition(gridPos)) this.selectedPos = gridPos;
+    }
+
+    act() {
+        if(this.selectedPos) {
+            const mousePos = map.gridToMousePosition(this.selectedPos);
+            circle(mousePos.x,mousePos.y,30);
+        }
     }
 }
 

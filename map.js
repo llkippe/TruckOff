@@ -87,7 +87,7 @@ class MAP {
             ['s',' ',' ',' ',' ','vd',' ','vy4','vw23',' '],
             [' ','vp',' ',' ','vg',' ',' ',' ','vr134',' '],
             [' ',' ','vb3','vy',' ',' ','vb',' ','1',' '],
-            ['vp4','23','vr134','vg2',' ',' ','vg','4','vb23',' '],
+            ['vg4','23','vr134','vg2',' ',' ','vg','4','vb23',' '],
             [' ','13','vp13','3','3','vy3',' ','vp','14','vd23'],
             ['vd3','1','1','vb1','1','vy14','v2',' ',' ','1'],
             ['vr1',' ',' ',' ',' ','vp4','2',' ',' ',' '],
@@ -190,7 +190,7 @@ class MAP {
         if(this.mapData[gridPos.y][gridPos.x].includes("g")) return {color: "green", id: 2};
         if(this.mapData[gridPos.y][gridPos.x].includes("b")) return {color: "blue", id: 3};
         if(this.mapData[gridPos.y][gridPos.x].includes("r")) return {color: "red", id: 4};
-        if(this.mapData[gridPos.y][gridPos.x].includes("g")) return {color: "gray", id: 5};
+        if(this.mapData[gridPos.y][gridPos.x].includes("d")) return {color: "dark", id: 5};
         if(this.mapData[gridPos.y][gridPos.x].includes("w")) return {color: "wild", id: 6};
     }
 

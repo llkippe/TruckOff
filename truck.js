@@ -109,7 +109,7 @@ class TRUCK {
         return newPos;
     }
 
-    
+
     findPathsToVenues(startPos) {
         const queue = [];
         const paths = new Map();
@@ -125,7 +125,7 @@ class TRUCK {
             if (path.length > this.maxAllowedMoves) continue;
 
             // Check if the current position is a venue
-            if (map.isVenue(pos)) {
+            if (map.isActiveVenue(pos)) {
                 //if(pos.x == 3 && pos.y == 2) 
                 //console.log(path);
                 if (venuePaths.has(JSON.stringify(pos))) { // evalute which path is better (look for shoter venuePaths)
