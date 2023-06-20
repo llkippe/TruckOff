@@ -1,13 +1,8 @@
 /*
-- fix which routes are selected 
-
-- add myt
+- bridge, gas display
 - add reroll
 - add +1 mov
 - add 2x
-- add gas
-- add bridge
-
 
 - add promotions
 - fix route tracker
@@ -69,7 +64,7 @@ function preload() {
   fontThick = loadFont("/fonts/Font_Bureau_-_Interstate-Black.otf");
   fontThickCom = loadFont("/fonts/Font_Bureau_-_Interstate-BlackCompressed.otf");
 
-  mapImg = loadImage("/imgs/map2.png");
+  mapImg = loadImage("/imgs/mapNoWater.png");
   truckImg = loadImage("/imgs/Trucks-08.png");
   diceImg4 = loadImage("/imgs/D4.png");
   diceImg6 = loadImage("/imgs/D6.png");
@@ -98,13 +93,11 @@ function setup() {
 }
 
 function draw() {
-  background(150);
+  background(150,185,199);
   routeTracker.draw();
   map.draw();
   dice.draw();
   routeTracker.drawActiveBonus();
-
- 
 }
 
 

@@ -157,8 +157,8 @@ class ROUTETRACKER {
     }
 
     addBonusForRow(y) {
-        if(y == 0) this.bonuses.push(new GAS_BONUS());
-        //if(y == 0) this.bonuses.push(new BRIDGE_BONUS());
+        //if(y == 0) this.bonuses.push(new GAS_BONUS());
+        if(y == 0) this.bonuses.push(new BRIDGE_BONUS());
         else if(y == 1) this.bonuses.push(new PROMOTE_VENUE_BONUS());
         else if(y == 2) this.bonuses.push(new GAS_BONUS());
         else if(y == 3) this.bonuses.push(new TWOTIMES_BONUS());

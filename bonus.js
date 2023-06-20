@@ -47,7 +47,7 @@ class BRIDGE_BONUS extends BONUS {
         }
 
         if(map.bridgeAllowed(this.selectedPos, gridPos)) {
-            console.log(this.selectedPos, gridPos);
+            map.addBridge(this.selectedPos,gridPos);
             routeTracker.removeFirstBonus();
             return;
         }
