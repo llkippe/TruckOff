@@ -15,10 +15,10 @@ class TRUCK {
 
     draw() {
         let mousePos = this.getAnimatedTruckPos();
-        if(mousePos) {
+        if (mousePos) {
             stroke(0)
             strokeWeight(5);
-            line(mousePos.x + map.GRID_SIZE/2,mousePos.y+ map.GRID_SIZE/2,mousePos.fromPosX+ map.GRID_SIZE/2,mousePos.fromPosY+ map.GRID_SIZE/2);
+            line(mousePos.x + map.GRID_SIZE / 2, mousePos.y + map.GRID_SIZE / 2, mousePos.fromPosX + map.GRID_SIZE / 2, mousePos.fromPosY + map.GRID_SIZE / 2);
         }
 
         if (mousePos == null) mousePos = map.gridToMousePosition(this.pos);
@@ -35,11 +35,11 @@ class TRUCK {
 
             if (animT < 1) {
 
-                
-                if(this.lastSegmentIndex != segmentIndex) { // update truck lines on map
+
+                if (this.lastSegmentIndex != segmentIndex) { // update truck lines on map
                     const fromPos = map.gridToMousePosition(this.animPath[this.lastSegmentIndex]);
                     const toPos = map.gridToMousePosition(this.animPath[segmentIndex]);
-                    map.truckLines.push({fromPos, toPos});
+                    map.truckLines.push({ fromPos, toPos });
 
                     this.lastSegmentIndex = segmentIndex
                 }
@@ -52,24 +52,24 @@ class TRUCK {
                 const x = lerp(pos0.x, pos1.x, t);
                 const y = lerp(pos0.y, pos1.y, t);
 
-                return { x, y, fromPosX: pos0.x, fromPosY: pos0.y};
-            }else {
+                return { x, y, fromPosX: pos0.x, fromPosY: pos0.y };
+            } else {
                 routeTracker.routeTrackingInit(map.getVenueType(this.pos));
 
                 const fromPos = map.gridToMousePosition(this.animPath[this.lastSegmentIndex]);
                 const toPos = map.gridToMousePosition(this.animPath[segmentIndex]);
-                map.truckLines.push({fromPos, toPos});
+                map.truckLines.push({ fromPos, toPos });
 
-                for(let i = 0; i < this.animPath.length; i++) {
+                for (let i = 0; i < this.animPath.length; i++) {
                     map.closeVenue(this.animPath[i]);
                 }
 
                 this.animPath = null;
                 this.animation = null;
-                
+
 
                 this.lastSegmentIndex = 0;
-                
+
             }
         }
 
@@ -89,6 +89,7 @@ class TRUCK {
 
     moveAllowed(pos, direction) {
         if (map.hasRiverAtSide(pos).includes(direction)) return false;
+
         if (direction === "UP" && map.posOutOfGridSize({ x: pos.x, y: pos.y - 1 })) return false;
         if (direction === "LEFT" && map.posOutOfGridSize({ x: pos.x - 1, y: pos.y })) return false;
         if (direction === "DOWN" && map.posOutOfGridSize({ x: pos.x, y: pos.y + 1 })) return false;
@@ -107,16 +108,64 @@ class TRUCK {
 
         return newPos;
     }
-
+    /*
+        findPathsToVenues(startPos) {
+            const queue = [];
+            const visited = new Set();
+            const paths = new Map();
+            const venuePaths = new Map();
+    
+            // Enqueue the starting position with an empty path
+            queue.push({ pos: startPos, path: [] });
+            visited.add(JSON.stringify(startPos));
+    
+            while (queue.length > 0) {
+                const { pos, path } = queue.shift();
+    
+                // check maxiumum moves
+                if (path.length > this.maxAllowedMoves) continue;
+    
+                // Check if the current position is a venue
+                if (map.isActiveVenue(pos)) {
+                    // wenn path nicht in venue path dann hinzufuegen
+                    if(!(this.isPathOverActiveVenue(path) && venuePaths.has(JSON.stringify(pos)))) {
+                        venuePaths.set(JSON.stringify(pos), path);
+                    }
+                   
+                }
+    
+                console.log(pos, venuePaths);
+                if (!paths.has(JSON.stringify(pos))) {
+                    paths.set(JSON.stringify(pos), path);
+                }
+    
+                for (const dir of this.directions) {
+                    const move = this.moveDirection(pos, dir);
+                    const moveKey = JSON.stringify(move);
+                    if (!visited.has(moveKey) && this.moveAllowed(pos, dir)) {
+                        visited.add(moveKey);
+                        queue.push({ pos: move, path: [...path, move] });
+                    }
+                }
+    
+            }
+    
+            venuePaths.delete(JSON.stringify(this.pos));
+            paths.delete(JSON.stringify(this.pos));
+    
+    
+    
+            if (venuePaths.size == 0) return paths;
+            else return venuePaths;
+        }
+    */
     findPathsToVenues(startPos) {
         const queue = [];
-        const visited = new Set();
         const paths = new Map();
         const venuePaths = new Map();
 
         // Enqueue the starting position with an empty path
         queue.push({ pos: startPos, path: [] });
-        visited.add(JSON.stringify(startPos));
 
         while (queue.length > 0) {
             const { pos, path } = queue.shift();
@@ -125,11 +174,23 @@ class TRUCK {
             if (path.length > this.maxAllowedMoves) continue;
 
             // Check if the current position is a venue
-            if (map.isActiveVenue(pos)) {
-                if(!(this.isPathOverActiveVenue(path) && venuePaths.has(JSON.stringify(pos)))) {
+            if (map.isVenue(pos)) {
+                //if(pos.x == 3 && pos.y == 2) 
+                //console.log(path);
+                if (venuePaths.has(JSON.stringify(pos))) { // evalute which path is better (look for shoter venuePaths)
+                    const prevPath = venuePaths.get(JSON.stringify(pos));
+                    if (this.isPathOverActiveVenue(prevPath)) {
+                        if (this.isPathOverActiveVenue(path)) { // chose shorter path if both over active venue
+                            if (path.length < prevPath.length) venuePaths.set(JSON.stringify(pos), path);
+                        } else {
+                            venuePaths.set(JSON.stringify(pos), path);
+                        }
+                    }
+                } else {
                     venuePaths.set(JSON.stringify(pos), path);
                 }
             }
+
             if (!paths.has(JSON.stringify(pos))) {
                 paths.set(JSON.stringify(pos), path);
             }
@@ -137,26 +198,27 @@ class TRUCK {
             for (const dir of this.directions) {
                 const move = this.moveDirection(pos, dir);
                 const moveKey = JSON.stringify(move);
-                if (!visited.has(moveKey) && this.moveAllowed(pos, dir)) {
-                    visited.add(moveKey);
-                    queue.push({ pos: move, path: [...path, move] });
-                }
-            }
 
+                // Check if the move is allowed
+                if (!this.moveAllowed(pos, dir)) continue;
+
+                const newPath = [...path, move];
+                queue.push({ pos: move, path: newPath });
+            }
         }
 
         venuePaths.delete(JSON.stringify(this.pos));
         paths.delete(JSON.stringify(this.pos));
 
 
-
         if (venuePaths.size == 0) return paths;
         else return venuePaths;
     }
 
+
     isPathOverActiveVenue(path) {
-        for(let i = 0; i < path.length; i++){
-            if(!map.isActiveVenue(path[i]) && map.isVenue(path[i])) return true;
+        for (let i = 0; i < path.length - 1; i++) {
+            if (map.isActiveVenue(path[i])) return true;
         }
         return false;
     }

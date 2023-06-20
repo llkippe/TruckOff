@@ -21,7 +21,7 @@
 
 */
 
-const ANIMATION_TIME = 0.2;
+const ANIMATION_TIME = 0.3;
 
 let fontReg;
 let fontRegCom;
@@ -124,9 +124,7 @@ function touchEnded() {
 }
 
 
-function lerp(a, b, t) {
-  return a + (b - a) * t;
-}
+
 
 function drawGradientRect(x, y, w, h, color1, color2) {
   // Draw the gradient rectangle

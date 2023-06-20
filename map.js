@@ -14,9 +14,6 @@ class MAP {
         this.warningPos = [];
         this.markedPos = null;
         this.truckPaths = null;
-
-        
-        
     }
 
     draw() {
@@ -74,8 +71,9 @@ class MAP {
 
     drawTruckLines() {
         for(let i = 0; i < this.truckLines.length; i++) {
-            stroke(0);
-            strokeWeight(5);
+            stroke(80);
+            strokeWeight(10);
+            strokeCap(ROUND);
             line(this.truckLines[i].fromPos.x + this.GRID_SIZE/2,this.truckLines[i].fromPos.y+ this.GRID_SIZE/2,this.truckLines[i].toPos.x+ this.GRID_SIZE/2,this.truckLines[i].toPos.y+ this.GRID_SIZE/2);
         }
     }
@@ -105,6 +103,7 @@ class MAP {
     // mouse aswell as touch position
     handleInput(mouseX, mouseY) {
         let gridPos =  this.mouseToGridPosition(mouseX, mouseY);
+        if(!this.posInGrid(gridPos)) return;
         if(gamestate == "chose starting position") this.choseStartingPosition(gridPos);
         if(gamestate == "move truck") this.moveTruck(gridPos);
     }
@@ -167,16 +166,20 @@ class MAP {
     }
 
     isStartingPosition(gridPos) {
+        if(!this.posInGrid(gridPos)) return false;
         return this.mapData[gridPos.y][gridPos.x].includes("s")
     }
 
     isVenue(gridPos) {
+        if(!this.posInGrid(gridPos)) return false;
         return this.mapData[gridPos.y][gridPos.x].includes("v") ; // wild venues
     }
     isActiveVenue(gridPos) {
+        if(!this.posInGrid(gridPos)) return false;
         return !this.mapData[gridPos.y][gridPos.x].includes("x") && this.isVenue(gridPos);
     }
     closeVenue(gridPos) {
+        if(!this.posInGrid(gridPos)) return;
         if(this.isActiveVenue(gridPos)) this.mapData[gridPos.y][gridPos.x] += "x";
     }
 
@@ -219,6 +222,10 @@ class MAP {
 
     getRawYPos() {
         return height - this.img.height;
+    }
+
+    posInGrid(gridPos) {
+        return gridPos.x >= 0 && gridPos.x <= 10 && gridPos.y >= 0 && gridPos.y <= 10;
     }
 
 }
