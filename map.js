@@ -16,6 +16,7 @@ class MAP {
         this.truckPaths = null;
 
         this.bridges = [];
+        this.gasStations = [];
     }
 
     draw() {
@@ -32,6 +33,7 @@ class MAP {
         this.drawMarkedPos();
         this.drawTruckPathLocations();
         this.drawWarningPos();
+        this.drawGasStations();
     }
 
     drawMarkedPos() {
@@ -101,6 +103,18 @@ class MAP {
                 const bridgeHeight = mouseToFrom.y - mousePosFrom.y;
                 rect(mousePosFrom.x + (this.GRID_SIZE - bridgeWidth) / 2, mousePosFrom.y + this.GRID_SIZE / 2 , bridgeWidth, bridgeHeight);
             }
+        }
+    }
+
+    drawGasStations() {
+        for(const gs of this.gasStations) {
+            const mousePos = this.gridToMousePosition(gs.pos);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(this.GRID_SIZE * 3 / 4);
+            fill(0);
+            
+            text("G", mousePos.x + this.GRID_SIZE/2, mousePos.y + this.GRID_SIZE/2);
         }
     }
 
@@ -244,7 +258,7 @@ class MAP {
     }
 
     addBridge(gridPos1, gridPos2) {
-        map.bridges.push({ fromPos: gridPos1, toPos: gridPos2 });
+        this.bridges.push({ fromPos: gridPos1, toPos: gridPos2 });
         if (gridPos1.y == gridPos2.y) {
             this.mapData[gridPos1.y][gridPos1.x] += "4";
             this.mapData[gridPos2.y][gridPos2.x] += "2";
@@ -252,6 +266,17 @@ class MAP {
             this.mapData[gridPos1.y][gridPos1.x] += "3";
             this.mapData[gridPos2.y][gridPos2.x] += "1";
         }
+    }
+
+    addGasStation(gridPos) {
+        this.gasStations.push({pos: gridPos});
+    }
+
+    isGasStation(gridPos) {
+        for(const gs of this.gasStations) {
+            if(JSON.stringify(gs.pos) == JSON.stringify(gridPos)) return true;
+        }
+        return false;
     }
 
     posOutOfGridSize(pos) {

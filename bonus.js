@@ -80,7 +80,7 @@ class GAS_BONUS extends BONUS {
         }
 
         if(!map.isVenue(gridPos)) {
-            console.log(this.selectedPos, gridPos);
+            map.addGasStation(gridPos);
             routeTracker.removeFirstBonus();
             return;
         }
