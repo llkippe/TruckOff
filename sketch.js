@@ -21,7 +21,7 @@
 
 */
 
-const ANIMATION_TIME = 0.3;
+const ANIMATION_TIME = 0.1;
 
 let fontReg;
 let fontRegCom;

@@ -6,7 +6,7 @@ class BONUS {
         console.log(img);
     }
 
-    handleInput() {
+    handleInput(mouseX, mouseY) {
 
     }
 
@@ -33,6 +33,33 @@ class BONUS {
 class BRIDGE_BONUS extends BONUS {
     constructor() {
         super(bridgeBonusImg);
+        this.selectedPos = null
+    }
+
+    handleInput(mouseX, mouseY) {
+        const gridPos = map.mouseToGridPosition(mouseX, mouseY);
+        console.log(gridPos);
+        if(!map.posInGrid(gridPos)) return;
+
+        if(this.selectedPos == null) {
+            this.selectedPos = gridPos;
+            return;
+        }
+
+        if(map.bridgeAllowed(this.selectedPos, gridPos)) {
+            console.log(this.selectedPos, gridPos);
+            routeTracker.removeFirstBonus();
+            return;
+        }
+
+        this.selectedPos = gridPos;
+    }
+
+    act() {
+        if(this.selectedPos) {
+            const mousePos = map.gridToMousePosition(this.selectedPos);
+            circle(mousePos.x,mousePos.y,30);
+        }
     }
 }
 

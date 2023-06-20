@@ -208,6 +208,15 @@ class MAP {
         return sideWithRiver;
     }
 
+    bridgeAllowed(gridPos1, gridPos2) {
+        const sidesWithRiver = this.hasRiverAtSide(gridPos1);
+        for(const side of sidesWithRiver) {
+            const newPos = this.truck.moveDirection(gridPos1, side);
+            if(JSON.stringify(newPos) == JSON.stringify(gridPos2)) return true;
+        }
+        return false;
+    }
+
     posOutOfGridSize(pos) {
         let outOf = pos.x < 0 || pos.x >= this.mapData[0].length || pos.y < 0 || pos.y >= this.mapData.length;
         return outOf;

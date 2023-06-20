@@ -108,57 +108,8 @@ class TRUCK {
 
         return newPos;
     }
-    /*
-        findPathsToVenues(startPos) {
-            const queue = [];
-            const visited = new Set();
-            const paths = new Map();
-            const venuePaths = new Map();
+
     
-            // Enqueue the starting position with an empty path
-            queue.push({ pos: startPos, path: [] });
-            visited.add(JSON.stringify(startPos));
-    
-            while (queue.length > 0) {
-                const { pos, path } = queue.shift();
-    
-                // check maxiumum moves
-                if (path.length > this.maxAllowedMoves) continue;
-    
-                // Check if the current position is a venue
-                if (map.isActiveVenue(pos)) {
-                    // wenn path nicht in venue path dann hinzufuegen
-                    if(!(this.isPathOverActiveVenue(path) && venuePaths.has(JSON.stringify(pos)))) {
-                        venuePaths.set(JSON.stringify(pos), path);
-                    }
-                   
-                }
-    
-                console.log(pos, venuePaths);
-                if (!paths.has(JSON.stringify(pos))) {
-                    paths.set(JSON.stringify(pos), path);
-                }
-    
-                for (const dir of this.directions) {
-                    const move = this.moveDirection(pos, dir);
-                    const moveKey = JSON.stringify(move);
-                    if (!visited.has(moveKey) && this.moveAllowed(pos, dir)) {
-                        visited.add(moveKey);
-                        queue.push({ pos: move, path: [...path, move] });
-                    }
-                }
-    
-            }
-    
-            venuePaths.delete(JSON.stringify(this.pos));
-            paths.delete(JSON.stringify(this.pos));
-    
-    
-    
-            if (venuePaths.size == 0) return paths;
-            else return venuePaths;
-        }
-    */
     findPathsToVenues(startPos) {
         const queue = [];
         const paths = new Map();
