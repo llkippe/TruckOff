@@ -1,12 +1,7 @@
 /*
-- bridge, gas display
-- add reroll
-- add +1 mov
-- add 2x
 
 - add promotions
-- fix route tracker
-
+-five dollar
 - add game end check
 - add scoring
 
@@ -80,7 +75,7 @@ function preload() {
   gasBonusImg = loadImage("/imgs/Draw a gas station.png");
   twotimesBonusImg = loadImage("/imgs/Draw a x2 on a venue.png");
   promoteVenueBonusImg = loadImage("/imgs/Promote a venue.png");
-  movementBonusImg = loadImage("/imgs/Move your truck.png");
+  movementBonusImg = loadImage("/imgs/1_movement-21.png");
   rerollBonusImg = loadImage("/imgs/Reroll up to two dice.png");
   movestartBonusImg = loadImage("/imgs/Move your truck.png");
   fivedollarBonusImg = loadImage("/imgs/Bonus - 5pts.png");

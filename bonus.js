@@ -1,6 +1,6 @@
 class BONUS {
     constructor(img) {
-        this.animation = new ANIMATION(2.5 * ANIMATION_TIME,0,"easePlateau");
+        this.animation = new ANIMATION(2.5,0,"easePlateau");
         this.img = img;
         this.size = width/4;
         console.log(img);
@@ -56,10 +56,7 @@ class BRIDGE_BONUS extends BONUS {
     }
 
     act() {
-        if(this.selectedPos) {
-            const mousePos = map.gridToMousePosition(this.selectedPos);
-            circle(mousePos.x,mousePos.y,30);
-        }
+        if(this.selectedPos) map.highlightPosition(this.selectedPos);
     }
 }
 
@@ -89,39 +86,13 @@ class GAS_BONUS extends BONUS {
     }
 
     act() {
-        if(this.selectedPos) {
-            const mousePos = map.gridToMousePosition(this.selectedPos);
-            circle(mousePos.x,mousePos.y,30);
-        }
+        if(this.selectedPos) map.highlightPosition(this.selectedPos);
     }
 }
 
 class TWOTIMES_BONUS extends BONUS {
     constructor() {
         super(twotimesBonusImg);
-    }
-}
-
-class PROMOTE_VENUE_BONUS extends BONUS {
-    constructor() {
-        super(promoteVenueBonusImg);
-    }
-}
-
-class MOVEMENT_BONUS extends BONUS {
-    constructor() {
-        super(movementBonusImg);
-    }
-}
-
-class REROLL_BONUS extends BONUS {
-    constructor() {
-        super(rerollBonusImg);
-    }
-}
-class MOVESTART_BONUS extends BONUS {
-    constructor() {
-        super(bridgeBonusImg);
         this.selectedPos = null
     }
 
@@ -131,13 +102,73 @@ class MOVESTART_BONUS extends BONUS {
         if(!map.posInGrid(gridPos)) return;
 
         if(this.selectedPos == null || JSON.stringify(this.selectedPos) != JSON.stringify(gridPos)) {
-            if(map.isStartingPosition(gridPos)) this.selectedPos = gridPos;
+            if(map.isActiveVenue(gridPos)) this.selectedPos = gridPos;
             return;
         }
 
-        if(map.isStartingPosition(gridPos)) {
+        if(map.isActiveVenue(gridPos)) {
+            map.add2xBonus(gridPos);
+            routeTracker.removeFirstBonus();
+            return;
+        }
+
+        if(map.isActiveVenue(gridPos)) this.selectedPos = gridPos;
+    }
+
+    act() {
+        if(this.selectedPos) map.highlightPosition(this.selectedPos);
+    }
+}
+
+class PROMOTE_VENUE_BONUS extends BONUS {
+    constructor() {
+        super(promoteVenueBonusImg);
+    }
+
+    handleInput(mouseX, mouseY){
+        const promo = routeTracker.collisionWithPromo(mouseX,mouseY);
+        if(promo) {
+            routeTracker.promoteVenue(promo);
+            routeTracker.removeFirstBonus();
+        }
+    } 
+    act() {
+
+    }
+}
+
+class MOVEMENT_BONUS extends BONUS {
+    constructor() {
+        super(movementBonusImg);
+        map.truck.maxAllowedMoves++;
+    }
+}
+
+class REROLL_BONUS extends BONUS {
+    constructor() {
+        super(rerollBonusImg);
+        dice.availableRerolls = 2;
+    }
+}
+class MOVESTART_BONUS extends BONUS {
+    constructor() {
+        super(movestartBonusImg);
+        this.selectedPos = null
+    }
+
+    handleInput(mouseX, mouseY) {
+        const gridPos = map.mouseToGridPosition(mouseX, mouseY);
+        console.log(gridPos);
+        if(!map.posInGrid(gridPos)) return;
+
+        if(this.selectedPos == null || JSON.stringify(this.selectedPos) != JSON.stringify(gridPos)) {
+            if(map.isActiveVenue(gridPos)) this.selectedPos = gridPos;
+            return;
+        }
+
+        if(map.isActiveVenue(gridPos)) {
             console.log(this.selectedPos, gridPos);
-            map.truck.pos = gridPos;
+            map.add2xBonus();
             routeTracker.removeFirstBonus();
             return;
         }
@@ -146,10 +177,7 @@ class MOVESTART_BONUS extends BONUS {
     }
 
     act() {
-        if(this.selectedPos) {
-            const mousePos = map.gridToMousePosition(this.selectedPos);
-            circle(mousePos.x,mousePos.y,30);
-        }
+        if(this.selectedPos) map.highlightPosition(this.selectedPos);
     }
 }
 

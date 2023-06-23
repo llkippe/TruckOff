@@ -69,10 +69,7 @@ class MAP {
         if (this.truckPaths) {
 
             for (const [key, value] of this.truckPaths.entries()) {
-                fill(200, 200, 255, 170);
-                noStroke();
-                let mousePos = this.gridToMousePosition(value[value.length - 1]);
-                circle(mousePos.x + this.GRID_SIZE / 2, mousePos.y + this.GRID_SIZE / 2, this.GRID_SIZE / 2);
+                this.highlightPosition(value[value.length - 1]);
             }
         }
     }
@@ -118,8 +115,12 @@ class MAP {
         }
     }
 
-
-
+    highlightPosition(gridPos) {
+        fill(200, 200, 255, 170);
+        noStroke();
+        let mousePos = this.gridToMousePosition(gridPos);
+        circle(mousePos.x + this.GRID_SIZE / 2, mousePos.y + this.GRID_SIZE / 2, this.GRID_SIZE / 2);
+    }
 
 
     createMapData() {
@@ -129,7 +130,7 @@ class MAP {
             [' ', ' ', 'vb3', 'vy', ' ', ' ', 'vb', ' ', '1', ' '],
             ['vg4', '23', 'vr134', 'vg2', ' ', ' ', 'vg', '4', 'vb23', ' '],
             [' ', '13', 'vp13', '3', '3', 'vy3', ' ', 'vp', '14', 'vd23'],
-            ['vd3', '1', '1', 'vb1', '1', 'vy14', 'v2', ' ', ' ', '1'],
+            ['vd3', '1', '1', 'vb1', '1', 'vy14', 'vp2', ' ', ' ', '1'],
             ['vr1', ' ', ' ', ' ', ' ', 'vp4', '2', ' ', ' ', ' '],
             [' ', ' ', ' ', 'vg3', '3', 'vr4', '2', 'vb', ' ', 'vy'],
             ['vp', 'vy', '4', 'vw123', '13', '34', 'vg2', ' ', 'vr', 'vp'],
@@ -218,6 +219,13 @@ class MAP {
         if (!this.posInGrid(gridPos)) return false;
         return !this.mapData[gridPos.y][gridPos.x].includes("x") && this.isVenue(gridPos);
     }
+    isPathOverActiveVenue(path) {
+        for (let i = 0; i < path.length - 1; i++) {
+            if (this.isActiveVenue(path[i])) return true;
+        }
+        return false;
+    }
+
     closeVenue(gridPos) {
         if (!this.posInGrid(gridPos)) return;
         if (this.isActiveVenue(gridPos)) this.mapData[gridPos.y][gridPos.x] += "x";
@@ -277,6 +285,22 @@ class MAP {
             if(JSON.stringify(gs.pos) == JSON.stringify(gridPos)) return true;
         }
         return false;
+    }
+
+    isPathOverGasStation(path) {
+        for (let i = 0; i < path.length - 1; i++) {
+            if (this.isGasStation(path[i])) return true;
+        }
+        return false;
+    }
+
+    add2xBonus(gridPos) {
+        this.mapData[gridPos.y][gridPos.x] += "t";
+    }
+
+    is2xBonus(gridPos) {
+        if (!this.posInGrid(gridPos)) return false;
+        return this.mapData[gridPos.y][gridPos.x].includes("t");
     }
 
     posOutOfGridSize(pos) {

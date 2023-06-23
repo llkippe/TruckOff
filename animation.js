@@ -1,7 +1,7 @@
 class ANIMATION {
     constructor(duration, waitTime,ease) {
       this.startTime = millis() + waitTime*1000;
-      this.duration = duration*1000;
+      this.duration = duration*1000 * ANIMATION_TIME;
       this.ease = ease
 
     }
@@ -13,6 +13,7 @@ class ANIMATION {
         if(this.ease == "easeInOutSin") animT = this.easeInOutSin(linearT);
         if(this.ease == "easeOutCubic") animT = this.easeOutCubic(linearT);
         if(this.ease == "easePlateau") animT = this.easePlateau(linearT);
+        if(this.ease == "easeInOutCubic") animT = this.easeInOutCubic(linearT);
 
         return animT;
     }
@@ -20,6 +21,11 @@ class ANIMATION {
     getLinearTime() {
       const timePassedSinceStart = millis() - this.startTime;
       return Math.min(timePassedSinceStart / this.duration, 1);
+    }
+
+    animationDone() {
+      const linearT = this.getLinearTime();
+      return linearT >= 1;
     }
 
     easeInOutSin(t) {
@@ -42,6 +48,14 @@ class ANIMATION {
       } else {
         // Easing back from the peak
         return this.easeOutCubic(lerp(1,0, (t-0.5)*2));
+      }
+    }
+    easeInOutCubic(t) {
+      if (t < 0.5) {
+        return 4 * t * t * t;
+      } else {
+        var reversedT = 1 - t;
+        return 1 - (4 * reversedT * reversedT * reversedT);
       }
     }
   }

@@ -54,7 +54,7 @@ class TRUCK {
 
                 return { x, y, fromPosX: pos0.x, fromPosY: pos0.y };
             } else {
-                routeTracker.routeTrackingInit(map.getVenueType(this.pos));
+                routeTracker.routeTrackingInit(map.getVenueType(this.pos), map.is2xBonus(this.pos));
 
                 const fromPos = map.gridToMousePosition(this.animPath[this.lastSegmentIndex]);
                 const toPos = map.gridToMousePosition(this.animPath[segmentIndex]);
@@ -81,7 +81,7 @@ class TRUCK {
     moveTruck(path) {
         this.animPath = path;
         this.animPath.unshift(this.pos);
-        this.animation = new ANIMATION(3 * ANIMATION_TIME, 0, "easeInOutSin");
+        this.animation = new ANIMATION(3, 0, "easeInOutSin");
 
 
         this.pos = path[path.length - 1];
@@ -122,7 +122,13 @@ class TRUCK {
             const { pos, path } = queue.shift();
 
             // check maxiumum moves
-            if (path.length > this.maxAllowedMoves) continue;
+            if(map.isPathOverGasStation(path)) {
+                if(path.length > this.maxAllowedMoves + 3) continue;
+            }else{
+                if (path.length > this.maxAllowedMoves) continue;
+            }
+
+            
 
             // Check if the current position is a venue
             if (map.isActiveVenue(pos)) {
@@ -130,8 +136,8 @@ class TRUCK {
                 //console.log(path);
                 if (venuePaths.has(JSON.stringify(pos))) { // evalute which path is better (look for shoter venuePaths)
                     const prevPath = venuePaths.get(JSON.stringify(pos));
-                    if (this.isPathOverActiveVenue(prevPath)) {
-                        if (this.isPathOverActiveVenue(path)) { // chose shorter path if both over active venue
+                    if (map.isPathOverActiveVenue(prevPath)) {
+                        if (map.isPathOverActiveVenue(path)) { // chose shorter path if both over active venue
                             if (path.length < prevPath.length) venuePaths.set(JSON.stringify(pos), path);
                         } else {
                             venuePaths.set(JSON.stringify(pos), path);
@@ -167,11 +173,6 @@ class TRUCK {
     }
 
 
-    isPathOverActiveVenue(path) {
-        for (let i = 0; i < path.length - 1; i++) {
-            if (map.isActiveVenue(path[i])) return true;
-        }
-        return false;
-    }
+    
 
 }

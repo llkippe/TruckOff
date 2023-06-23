@@ -82,7 +82,7 @@ class DICE {
     
     rollingDiceInit() {
         gamestate = "rolling dice";
-        this.animation = new ANIMATION(this.animationDuration * ANIMATION_TIME,0,"easeOutCubic");
+        this.animation = new ANIMATION(this.animationDuration,0,"easeOutCubic");
         this.diceRerolled = 0;
     }
 
@@ -102,7 +102,7 @@ class DICE {
     handleInput(mouseX, mouseY) {
         let dice = this.collisionWithDice(mouseX, mouseY);
         if(dice != null) {
-            this.animation = new ANIMATION(this.animationDuration * ANIMATION_TIME,0,"easeOutCubic");
+            this.animation = new ANIMATION(this.animationDuration,0,"easeOutCubic");
             this.diceToReroll = dice;
         }
     }
