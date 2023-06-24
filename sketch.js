@@ -1,6 +1,5 @@
 /*
 
-- add promotions
 -five dollar
 - add game end check
 - add scoring
@@ -46,6 +45,8 @@ let venuePromo3Img;
 
 let routeTrackerImg;
 let routeTracker;
+
+let venuePromotions;
 
 let gamestate = "chose starting position";
 
@@ -93,13 +94,16 @@ function draw() {
   map.draw();
   dice.draw();
   routeTracker.drawActiveBonus();
+  venuePromotions.draw();
 }
 
 
 function initGame() {
   map = new MAP(mapImg);
   dice = new DICE(diceImg4, diceImg6, diceImg8, diceImg10, diceImg12, diceImg20);
+  venuePromotions = new VENUEPROMOTIONS();
   routeTracker = new ROUTETRACKER();
+  
   textFont(fontThick);
 }
 

@@ -4,16 +4,11 @@ class ROUTETRACKER {
         this.padding = 20;
         this.scale = (width - this.padding*2) / this.routeTrackerImg.width;
         this.routeTrackerImg.resize(this.routeTrackerImg.width*this.scale, this.routeTrackerImg.height*this.scale);
+        this.posY = venuePromotions.height;
         this.width = width;
-        this.height = dice.pos.y;
+        this.height = dice.pos.y - this.posY;
 
-        this.promoHeight = 150;
-        this.promoPadding = 20;
-        this.promoImgs = [venuePromo6Img, venuePromo4Img, venuePromo3Img];
-        this.promoScale = (this.promoHeight - this.promoPadding*2) / this.promoImgs[0].height;
-        for(let i = 0; i < this.promoImgs.length; i++) {
-            this.promoImgs[i].resize(this.promoImgs[i].width*this.promoScale,this.promoImgs[i].height*this.promoScale);
-        }
+        
 
         this.trackerData = this.getTrackerData();
         this.trackerPos = {x: 0, y: 0};
@@ -30,26 +25,14 @@ class ROUTETRACKER {
     draw() {
         fill(68, 52, 123);
         noStroke();
-        rect(0,0,this.width,this.height);
-        
+        rect(0,this.posY,this.width,this.height);
 
         this.drawRouteTracker();
-        fill(68, 52, 123);
-        noStroke();
-        rect(0,0,this.width,this.promoHeight + this.promoPadding);
-        this.drawVenuePromos();
-        drawGradientRect(0, this.height - this.padding + 8, this.width, this.padding - 8, color(68, 52, 123), color(225,224,213));
+
+        drawGradientRect(0, this.posY + this.height - this.padding + 8, this.width, this.padding - 8, color(68, 52, 123), color(225,224,213));
     }
 
-    drawVenuePromos() {
-        imageMode(CENTER);
-        for(let x = 0; x < 6; x++) {
-            const mousePos = this.getMousePosOfPromo(x);
-            const imgIndex = Math.min(x, 2);
-            image(this.promoImgs[imgIndex], mousePos.x, mousePos.y);
-        }
-        imageMode(CORNER);
-    }
+    
 
     drawRouteTracker() {
         let yOffset = 0;
@@ -73,7 +56,7 @@ class ROUTETRACKER {
 
         
 
-        image(this.routeTrackerImg, this.padding,this.padding + this.promoHeight - yOffset);
+        image(this.routeTrackerImg, this.padding, this.padding + this.posY - yOffset);
 
         for(let y = 0; y < this.trackerData.length; y++) {
             for(let x = 0; x < this.trackerData[y].length; x++) {
@@ -96,7 +79,7 @@ class ROUTETRACKER {
     getMousePos(gridX, gridY) {
         const pos = {
             x: this.padding + (118 + 91.5 * gridX) * this.scale,
-            y: this.padding + (39 + 84 * gridY)* this.scale + this.promoHeight
+            y: this.padding + (39 + 84 * gridY)* this.scale + this.posY
         }
         return pos;
     }
@@ -196,8 +179,8 @@ class ROUTETRACKER {
     }
 
     addBonusForRow(y) {
-        if(y == 0) this.bonuses.push(new PROMOTE_VENUE_BONUS());
-        //if(y == 0) this.bonuses.push(new BRIDGE_BONUS());
+        //if(y == 0) this.bonuses.push(new PROMOTE_VENUE_BONUS());
+        if(y == 0) this.bonuses.push(new BRIDGE_BONUS());
         else if(y == 1) this.bonuses.push(new PROMOTE_VENUE_BONUS());
         else if(y == 2) this.bonuses.push(new GAS_BONUS());
         else if(y == 3) this.bonuses.push(new TWOTIMES_BONUS());
@@ -216,29 +199,10 @@ class ROUTETRACKER {
 
 
     fitsRouteTrackerOnScreen(offset) {
-        return this.height - this.padding - 10 >= this.promoHeight + this.routeTrackerImg.height - offset;
+        return this.posY + this.height - this.padding - 10 >= this.posY + this.routeTrackerImg.height - offset;
     }
 
-    getMousePosOfPromo(x) {
-        let mousePos = this.getMousePos(x,0);
-        mousePos.y = this.padding + this.promoHeight/2;
-        return mousePos;
-    }
-
-    collisionWithPromo(mouseX, mouseY) {
-        for(let x = 0; x < 6; x++) {
-            const mousePos = this.getMousePosOfPromo(x);
-            const imgIndex = Math.min(x, 2);
-            if(dist(mousePos.x, mousePos.y, mouseX, mouseY) <= this.promoImgs[imgIndex].height) {
-                return x;
-            }
-        }
-        return null;
-    }
-
-    promoteVenue(promo) {
-        console.log(promo);
-    }
+    
 
     
 

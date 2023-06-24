@@ -126,9 +126,10 @@ class PROMOTE_VENUE_BONUS extends BONUS {
     }
 
     handleInput(mouseX, mouseY){
-        const promo = routeTracker.collisionWithPromo(mouseX,mouseY);
-        if(promo) {
-            routeTracker.promoteVenue(promo);
+        const promo = venuePromotions.collisionWithPromo(mouseX,mouseY);
+        if(promo != null) {
+            console.log(promo)
+            venuePromotions.promoteVenue(promo);
             routeTracker.removeFirstBonus();
         }
     } 
@@ -158,17 +159,15 @@ class MOVESTART_BONUS extends BONUS {
 
     handleInput(mouseX, mouseY) {
         const gridPos = map.mouseToGridPosition(mouseX, mouseY);
-        console.log(gridPos);
         if(!map.posInGrid(gridPos)) return;
 
         if(this.selectedPos == null || JSON.stringify(this.selectedPos) != JSON.stringify(gridPos)) {
-            if(map.isActiveVenue(gridPos)) this.selectedPos = gridPos;
+            if(map.isStartingPosition(gridPos)) this.selectedPos = gridPos;
             return;
         }
 
-        if(map.isActiveVenue(gridPos)) {
-            console.log(this.selectedPos, gridPos);
-            map.add2xBonus();
+        if(map.isStartingPosition(gridPos)) {
+            map.truck.pos = gridPos;
             routeTracker.removeFirstBonus();
             return;
         }
