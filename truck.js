@@ -1,6 +1,6 @@
 class TRUCK {
-    constructor(img, gridPos) {
-        this.img = img;
+    constructor(gridPos) {
+        this.img = chosenTruckImg;
         this.img.resize(map.GRID_SIZE, map.GRID_SIZE);
 
         this.pos = gridPos;
@@ -12,6 +12,7 @@ class TRUCK {
         this.lastSegmentIndex = 0;
 
     }
+
 
     draw() {
         let mousePos = this.getAnimatedTruckPos();

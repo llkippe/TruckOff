@@ -152,7 +152,7 @@ class MAP {
     choseStartingPosition(gridPos) {
         if (this.isStartingPosition(gridPos)) {
             if (JSON.stringify(gridPos) === JSON.stringify(this.markedPos)) {
-                this.truck = new TRUCK(truckImg, gridPos);
+                this.truck = new TRUCK(gridPos);
                 this.markedPos = null;
                 dice.rollingDiceInit();
             } else this.markedPos = gridPos;

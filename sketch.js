@@ -1,12 +1,5 @@
 /*
-
--five dollar
-
-
 - add menue
-
-
-
 */
 
 const ANIMATION_TIME = 0.1;
@@ -16,7 +9,14 @@ let fontRegCom;
 let fontThick;
 let fontThickCom;
 
-let truckImg; 
+
+let chosenTruckImg;
+let truck1Img;
+let truck2Img;
+let truck3Img;
+let truck4Img;
+let truck5Img;
+let truck6Img; 
 
 let mapImg;
 let map;
@@ -47,12 +47,14 @@ let routeTracker;
 
 let venuePromotions;
 
-let gamestate = "chose starting position";
+let gamestate = "menu";
 
 let score = 0;
 let dollarbonus = 0;
 
-let animation;
+let menu;
+let logoImg;
+
 
 
 function preload() {
@@ -62,7 +64,13 @@ function preload() {
   fontThickCom = loadFont("/fonts/Font_Bureau_-_Interstate-BlackCompressed.otf");
 
   mapImg = loadImage("/imgs/mapNoWater.png");
-  truckImg = loadImage("/imgs/Trucks-08.png");
+  truck1Img = loadImage("/imgs/Trucks-08.png");
+  truck2Img = loadImage("/imgs/Trucks-21.png");
+  truck3Img = loadImage("/imgs/Trucks-22.png");
+  truck4Img = loadImage("/imgs/Trucks-29.png");
+  truck5Img = loadImage("/imgs/Trucks-36.png");
+  truck6Img = loadImage("/imgs/Trucks-43.png");
+  logoImg = loadImage("/imgs/Logo-03.png");
   diceImg4 = loadImage("/imgs/D4.png");
   diceImg6 = loadImage("/imgs/D6.png");
   diceImg8 = loadImage("/imgs/D8.png");
@@ -91,11 +99,18 @@ function setup() {
 
 function draw() {
   background(150,185,199);
-  routeTracker.draw();
-  map.draw();
-  dice.draw();
-  routeTracker.drawActiveBonus();
-  venuePromotions.draw();
+
+  if(gamestate == "menu") {
+    menu.draw();
+  }else{
+    routeTracker.draw();
+    map.draw();
+    dice.draw();
+    routeTracker.drawActiveBonus();
+    venuePromotions.draw();
+  }
+
+  
 
   fill(0)
   text(score, 60, 60);
@@ -103,6 +118,7 @@ function draw() {
 
 
 function initGame() {
+  menu = new MENU();
   map = new MAP(mapImg);
   dice = new DICE(diceImg4, diceImg6, diceImg8, diceImg10, diceImg12, diceImg20);
   venuePromotions = new VENUEPROMOTIONS();
@@ -113,11 +129,11 @@ function initGame() {
 
 function endOfGameInit() {
   gamestate = "game ended";
-
 }
 
 function touchEnded() {
   map.handleInput(mouseX, mouseY);
+  if(gamestate == "menu") menu.handleInput(mouseX, mouseY);
   if(gamestate == "rerolling dice") dice.handleInput(mouseX, mouseY);
   if(gamestate == "route tracking") routeTracker.handleInput(mouseX,mouseY);
   if(gamestate == "handle bonuses") routeTracker.handleBonusInput(mouseX, mouseY);
@@ -137,5 +153,7 @@ function drawGradientRect(x, y, w, h, color1, color2) {
     line(x, j, x + w, j);
   }
 }
+
+
 
 
