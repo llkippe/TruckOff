@@ -81,14 +81,14 @@ function preload() {
   venuePromo3Img = loadImage("/imgs/venuePromo3.png");
   venuePromo4Img = loadImage("/imgs/venuePromo4.png");
   venuePromo6Img = loadImage("/imgs/venuePromo6.png");
-  bridgeBonusImg = loadImage("/imgs/Draw a bridge.png");
-  gasBonusImg = loadImage("/imgs/Draw a gas station.png");
-  twotimesBonusImg = loadImage("/imgs/Draw a x2 on a venue.png");
-  promoteVenueBonusImg = loadImage("/imgs/Promote a venue.png");
-  movementBonusImg = loadImage("/imgs/1_movement-21.png");
-  rerollBonusImg = loadImage("/imgs/Reroll up to two dice.png");
-  movestartBonusImg = loadImage("/imgs/Move your truck.png");
-  fivedollarBonusImg = loadImage("/imgs/Bonus - 5pts.png");
+  bridgeBonusImg = loadImage("/imgs/drawBridge.png");
+  gasBonusImg = loadImage("/imgs/gasStation.png");
+  twotimesBonusImg = loadImage("/imgs/twotimes.png");
+  promoteVenueBonusImg = loadImage("/imgs/promoteVenue.png");
+  movementBonusImg = loadImage("/imgs/movement.png");
+  rerollBonusImg = loadImage("/imgs/reroll.png");
+  movestartBonusImg = loadImage("/imgs/movestart.png");
+  fivedollarBonusImg = loadImage("/imgs/fivedollarbonus.png");
 }
 
 

@@ -194,13 +194,11 @@ class ROUTETRACKER {
     addBonusForCol(x) {
         if(x == 0) {
             this.bonuses.push(new PROMOTE_VENUE_BONUS());
-            dollarbonus += 5;
-            this.calculateScore();
+            this.bonuses.push(new FIVEDOLLAR_BONUS);
         } 
         else if(x == 1) {
             this.bonuses.push(new GAS_BONUS);
-            dollarbonus += 5;
-            this.calculateScore();
+            this.bonuses.push(new FIVEDOLLAR_BONUS);
         }
         else if(x == 2) this.bonuses.push(new TWOTIMES_BONUS());
         else if(x == 3) this.bonuses.push(new MOVEMENT_BONUS());
