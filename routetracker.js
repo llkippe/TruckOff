@@ -131,6 +131,8 @@ class ROUTETRACKER {
 
             this.moveTracker();
         }
+
+        this.calculateScore();
     }
     moveTracker() {
         if(this.trackerPos.y % 2 == 0) this.trackerPos.x++;
@@ -143,7 +145,8 @@ class ROUTETRACKER {
             this.trackerPos.x = 5;
             this.trackerPos.y ++;
             this.animation = new ANIMATION(1.5, 0, "easeInOutCubic");
-        } 
+        }
+        if(this.trackerPos.y > 5) endOfGameInit();
     }
 
     handleBonusesInit(trackerPos) {
@@ -189,8 +192,16 @@ class ROUTETRACKER {
          
     }
     addBonusForCol(x) {
-        if(x == 0) this.bonuses.push(new PROMOTE_VENUE_BONUS());
-        else if(x == 1) this.bonuses.push(new GAS_BONUS);
+        if(x == 0) {
+            this.bonuses.push(new PROMOTE_VENUE_BONUS());
+            dollarbonus += 5;
+            this.calculateScore();
+        } 
+        else if(x == 1) {
+            this.bonuses.push(new GAS_BONUS);
+            dollarbonus += 5;
+            this.calculateScore();
+        }
         else if(x == 2) this.bonuses.push(new TWOTIMES_BONUS());
         else if(x == 3) this.bonuses.push(new MOVEMENT_BONUS());
         else if(x == 4) this.bonuses.push(new REROLL_BONUS());
@@ -200,6 +211,32 @@ class ROUTETRACKER {
 
     fitsRouteTrackerOnScreen(offset) {
         return this.posY + this.height - this.padding - 10 >= this.posY + this.routeTrackerImg.height - offset;
+    }
+
+    calculateScore() {
+        score = 0;
+        for(let y = 0; y < this.trackerData.length; y++) {
+            for(let x = 0; x < this.trackerData[y].length; x++) {
+                if(this.trackerData[y][x] != ' ' && this.trackerData[y][x] != 'X') {
+                    score += this.trackerData[y][x];
+                }
+            }
+        }
+        score += dollarbonus;
+
+        for(let i = 0; i < venuePromotions.data.length; i++) {
+            if(venuePromotions.data[i]) {
+                score += parseInt(venuePromotions.data[i] * this.entriesInCol(i));
+            }
+        }
+    }
+
+    entriesInCol(x) {
+        let number = 0;
+        for(let y = 0; y < this.trackerData.length; y++) {
+            if(this.trackerData[y][x] != ' ') number++;
+        }
+        return number;
     }
 
     

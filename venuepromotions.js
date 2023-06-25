@@ -100,5 +100,7 @@ class VENUEPROMOTIONS {
             else if(promo == 1) this.data[promo] = Math.min(4, this.data[promo]);
             else this.data[promo] = Math.min(3, this.data[promo]);
         }else this.data[promo] = 2;
+
+        routeTracker.calculateScore();
     }
 }

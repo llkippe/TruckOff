@@ -184,5 +184,10 @@ class FIVEDOLLAR_BONUS extends BONUS {
     constructor() {
         super(fivedollarBonusImg);
     }
+    act() {
+        dollarbonus+=5;
+        routeTracker.calculateScore();
+        routeTracker.removeFirstBonus();
+    }
 }
 

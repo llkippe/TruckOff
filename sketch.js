@@ -1,8 +1,7 @@
 /*
 
 -five dollar
-- add game end check
-- add scoring
+
 
 - add menue
 
@@ -50,6 +49,8 @@ let venuePromotions;
 
 let gamestate = "chose starting position";
 
+let score = 0;
+let dollarbonus = 0;
 
 let animation;
 
@@ -95,6 +96,9 @@ function draw() {
   dice.draw();
   routeTracker.drawActiveBonus();
   venuePromotions.draw();
+
+  fill(0)
+  text(score, 60, 60);
 }
 
 
@@ -105,6 +109,11 @@ function initGame() {
   routeTracker = new ROUTETRACKER();
   
   textFont(fontThick);
+}
+
+function endOfGameInit() {
+  gamestate = "game ended";
+
 }
 
 function touchEnded() {
