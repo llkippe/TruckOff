@@ -60,7 +60,7 @@ let logoImg;
 function preload() {
   //fontReg = loadFont("fonts/Font_Bureau_-_Interstate-Regular.otf");
   //fontRegCom = loadFont("fonts/Font_Bureau_-_Interstate-RegularCompressed.otf");
- //// fontThick = loadFont("fonts/Font_Bureau_-_Interstate-Black.otf");
+   fontThick = loadFont("fonts/FontBureau.otf");
  // fontThickCom = loadFont("/fonts/Font_Bureau_-_Interstate-BlackCompressed.otf");
 
   mapImg = loadImage("imgs/mapNoWater.png");
@@ -124,7 +124,7 @@ function initGame() {
   venuePromotions = new VENUEPROMOTIONS();
   routeTracker = new ROUTETRACKER();
   
- // textFont(fontThick);
+ textFont(fontThick);
 }
 
 function endOfGameInit() {
