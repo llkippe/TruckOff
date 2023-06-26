@@ -2,7 +2,7 @@
 - fix bridge into map
 */
 
-const ANIMATION_TIME = 0.1;
+const ANIMATION_TIME = 1;
 
 let fontReg;
 let fontRegCom;
