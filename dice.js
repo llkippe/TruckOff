@@ -1,7 +1,7 @@
 class DICE {
     constructor(img4,img6,img8,img10,img12,img20) {
         this.width = width;
-        this.height = 200;
+        this.height = 150;
         this.pos = {
             x: 0,
             y: map.getRawYPos() - this.height
@@ -20,7 +20,7 @@ class DICE {
         this.previousStep = 0;
         this.stepSize = 20
         this.diceToReroll = 0;
-        this.animationDuration = 2;
+        this.animationDuration = 1;
     }
 
     draw() {

@@ -1,8 +1,8 @@
 class VENUEPROMOTIONS {
     constructor() {
         this.width = width;
-        this.height = 130;
-        this.padding = 5;
+        this.height = 100;
+        this.padding = 0;
         this.imgs = [venuePromo6Img, venuePromo4Img, venuePromo3Img];
         this.scale = (this.height - this.padding*2) / this.imgs[0].height;
         for(let i = 0; i < this.imgs.length; i++) {

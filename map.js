@@ -26,10 +26,10 @@ class MAP {
         this.drawBridges();
         image(this.img, 0, this.getRawYPos());
         //this.drawGrid();
-
-
-        if (this.truck) this.truck.draw();
+        if(this.truck) this.truck.getAnimatedTruckPos();
         this.drawTruckLines();
+        if (this.truck) this.truck.draw();
+        
         this.drawMarkedPos();
         this.drawTruckPathLocations();
         this.drawWarningPos();
@@ -268,11 +268,11 @@ class MAP {
     addBridge(gridPos1, gridPos2) {
         this.bridges.push({ fromPos: gridPos1, toPos: gridPos2 });
         if (gridPos1.y == gridPos2.y) {
-            this.mapData[gridPos1.y][gridPos1.x] += "4";
-            this.mapData[gridPos2.y][gridPos2.x] += "2";
+            this.mapData[gridPos1.y][gridPos1.x] = this.mapData[gridPos1.y][gridPos1.x].replace("1", "");
+            this.mapData[gridPos2.y][gridPos2.x] = this.mapData[gridPos2.y][gridPos2.x].replace("3", "");
         } else if (gridPos1.x == gridPos2.x) {
-            this.mapData[gridPos1.y][gridPos1.x] += "3";
-            this.mapData[gridPos2.y][gridPos2.x] += "1";
+            this.mapData[gridPos1.y][gridPos1.x] = this.mapData[gridPos1.y][gridPos1.x].replace("2", "");
+            this.mapData[gridPos2.y][gridPos2.x] = this.mapData[gridPos2.y][gridPos2.x].replace("4", "");
         }
     }
 

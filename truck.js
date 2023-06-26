@@ -17,8 +17,9 @@ class TRUCK {
     draw() {
         let mousePos = this.getAnimatedTruckPos();
         if (mousePos) {
-            stroke(0)
-            strokeWeight(5);
+            stroke(80);
+            strokeWeight(10);
+            strokeCap(ROUND);
             line(mousePos.x + map.GRID_SIZE / 2, mousePos.y + map.GRID_SIZE / 2, mousePos.fromPosX + map.GRID_SIZE / 2, mousePos.fromPosY + map.GRID_SIZE / 2);
         }
 
@@ -82,7 +83,7 @@ class TRUCK {
     moveTruck(path) {
         this.animPath = path;
         this.animPath.unshift(this.pos);
-        this.animation = new ANIMATION(3, 0, "easeInOutSin");
+        this.animation = new ANIMATION(2, 0, "easeInOutSin");
 
 
         this.pos = path[path.length - 1];

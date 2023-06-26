@@ -1,5 +1,5 @@
 /*
-- add menue
+- fix bridge into map
 */
 
 const ANIMATION_TIME = 0.1;
@@ -58,37 +58,37 @@ let logoImg;
 
 
 function preload() {
-  fontReg = loadFont("/fonts/Font_Bureau_-_Interstate-Regular.otf");
-  fontRegCom = loadFont("/fonts/Font_Bureau_-_Interstate-RegularCompressed.otf");
-  fontThick = loadFont("/fonts/Font_Bureau_-_Interstate-Black.otf");
+  fontReg = loadFont("fonts/Font_Bureau_-_Interstate-Regular.otf");
+  fontRegCom = loadFont("fonts/Font_Bureau_-_Interstate-RegularCompressed.otf");
+  fontThick = loadFont("fonts/Font_Bureau_-_Interstate-Black.otf");
   fontThickCom = loadFont("/fonts/Font_Bureau_-_Interstate-BlackCompressed.otf");
 
-  mapImg = loadImage("/imgs/mapNoWater.png");
-  truck1Img = loadImage("/imgs/Trucks-08.png");
-  truck2Img = loadImage("/imgs/Trucks-21.png");
-  truck3Img = loadImage("/imgs/Trucks-22.png");
-  truck4Img = loadImage("/imgs/Trucks-29.png");
-  truck5Img = loadImage("/imgs/Trucks-36.png");
-  truck6Img = loadImage("/imgs/Trucks-43.png");
-  logoImg = loadImage("/imgs/Logo-03.png");
-  diceImg4 = loadImage("/imgs/D4.png");
-  diceImg6 = loadImage("/imgs/D6.png");
-  diceImg8 = loadImage("/imgs/D8.png");
-  diceImg10 = loadImage("/imgs/D10.png");
-  diceImg12 = loadImage("/imgs/D12.png");
-  diceImg20 = loadImage("/imgs/D20.png");
-  routeTrackerImg = loadImage("/imgs/routePlanerOnly.png");
-  venuePromo3Img = loadImage("/imgs/venuePromo3.png");
-  venuePromo4Img = loadImage("/imgs/venuePromo4.png");
-  venuePromo6Img = loadImage("/imgs/venuePromo6.png");
-  bridgeBonusImg = loadImage("/imgs/drawBridge.png");
-  gasBonusImg = loadImage("/imgs/gasStation.png");
-  twotimesBonusImg = loadImage("/imgs/twotimes.png");
-  promoteVenueBonusImg = loadImage("/imgs/promoteVenue.png");
-  movementBonusImg = loadImage("/imgs/movement.png");
-  rerollBonusImg = loadImage("/imgs/reroll.png");
-  movestartBonusImg = loadImage("/imgs/movestart.png");
-  fivedollarBonusImg = loadImage("/imgs/fivedollarbonus.png");
+  mapImg = loadImage("imgs/mapNoWater.png");
+  truck1Img = loadImage("imgs/Trucks-08.png");
+  truck2Img = loadImage("imgs/Trucks-21.png");
+  truck3Img = loadImage("imgs/Trucks-22.png");
+  truck4Img = loadImage("imgs/Trucks-29.png");
+  truck5Img = loadImage("imgs/Trucks-36.png");
+  truck6Img = loadImage("imgs/Trucks-43.png");
+  logoImg = loadImage("imgs/Logo-03.png");
+  diceImg4 = loadImage("imgs/D4.png");
+  diceImg6 = loadImage("imgs/D6.png");
+  diceImg8 = loadImage("imgs/D8.png");
+  diceImg10 = loadImage("imgs/D10.png");
+  diceImg12 = loadImage("imgs/D12.png");
+  diceImg20 = loadImage("imgs/D20.png");
+  routeTrackerImg = loadImage("imgs/routePlanerOnly.png");
+  venuePromo3Img = loadImage("imgs/venuePromo3.png");
+  venuePromo4Img = loadImage("imgs/venuePromo4.png");
+  venuePromo6Img = loadImage("imgs/venuePromo6.png");
+  bridgeBonusImg = loadImage("imgs/drawBridge.png");
+  gasBonusImg = loadImage("imgs/gasStation.png");
+  twotimesBonusImg = loadImage("imgs/twotimes.png");
+  promoteVenueBonusImg = loadImage("imgs/promoteVenue.png");
+  movementBonusImg = loadImage("imgs/movement.png");
+  rerollBonusImg = loadImage("imgs/reroll.png");
+  movestartBonusImg = loadImage("imgs/movestart.png");
+  fivedollarBonusImg = loadImage("imgs/fivedollarbonus.png");
 }
 
 

@@ -1,7 +1,7 @@
 class ROUTETRACKER {
     constructor() {
         this.routeTrackerImg = routeTrackerImg;
-        this.padding = 20;
+        this.padding = 15;
         this.scale = (width - this.padding*2) / this.routeTrackerImg.width;
         this.routeTrackerImg.resize(this.routeTrackerImg.width*this.scale, this.routeTrackerImg.height*this.scale);
         this.posY = venuePromotions.height;
