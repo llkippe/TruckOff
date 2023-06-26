@@ -62,7 +62,7 @@ class BRIDGE_BONUS extends BONUS {
 
 class GAS_BONUS extends BONUS {
     constructor() {
-        super(bridgeBonusImg);
+        super(gasBonusImg);
         this.selectedPos = null
     }
 

@@ -1,5 +1,8 @@
 /*
 - fix bridge into map
+- first bonus show in top right
+- higlight diffrent vis
+- faq in menu
 */
 
 const ANIMATION_TIME = 1;
