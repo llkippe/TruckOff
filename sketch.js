@@ -108,12 +108,13 @@ function draw() {
     dice.draw();
     routeTracker.drawActiveBonus();
     venuePromotions.draw();
+    fill(0)
+  text(score, 60, 60);
   }
 
   
 
-  fill(0)
-  text(score, 60, 60);
+  
 }
 
 
