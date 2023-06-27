@@ -1,6 +1,3 @@
-/*
-- ? for bonuses
-*/
 
 const ANIMATION_TIME = 1;
 let highlightImg;
@@ -130,9 +127,9 @@ function draw() {
     venuePromotions.draw();
     routeTracker.drawActiveBonusIcon();
     routeTracker.drawBonusOverlayCol();
-    fill(0)
+    fill(255)
     textAlign(CENTER);
-    textSize(50);
+    textSize(width/20);
     text(score, 60, 60);
 
     if(gamestate == "game ended") {

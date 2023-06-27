@@ -1,7 +1,7 @@
 class DICE {
     constructor() {
         this.width = width;
-        this.height = 150;
+        this.height = height/15;
         this.pos = {
             x: 0,
             y: map.getRawYPos() - this.height
@@ -79,7 +79,7 @@ class DICE {
         noStroke();
         fill(0);
         textAlign(CENTER, CENTER); // Center the text horizontally and vertically
-        textSize(44); // Adjust the font size as needed
+        textSize(this.height*2/7); // Adjust the font size as needed
         text(number, centerX, centerY);
     }
 

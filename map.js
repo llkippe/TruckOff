@@ -71,7 +71,7 @@ class MAP {
     drawTruckLines() {
         for (let i = 0; i < this.truckLines.length; i++) {
             stroke(80);
-            strokeWeight(10);
+            strokeWeight(this.GRID_SIZE/ 10);
             strokeCap(ROUND);
             line(this.truckLines[i].fromPos.x + this.GRID_SIZE / 2, this.truckLines[i].fromPos.y + this.GRID_SIZE / 2, this.truckLines[i].toPos.x + this.GRID_SIZE / 2, this.truckLines[i].toPos.y + this.GRID_SIZE / 2);
         }

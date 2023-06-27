@@ -20,7 +20,8 @@ class ROUTETRACKER {
         this.trackerYBefore = 0;
 
         this.drawBonusOverlay = false;
-        this.overlayButton = new BUTTON(this.width - 90,this.height-90 + this.posY,70,70,15,10,6,color(50),color(244,131,36),color(255),"?",function() {routeTracker.drawBonusOverlay = !routeTracker.drawBonusOverlay});
+        const size = width/15;
+        this.overlayButton = new BUTTON(this.width - size - 20,this.height-size-20 + this.posY,size,size,15,10,6,color(50),color(244,131,36),color(255),"?",function() {routeTracker.drawBonusOverlay = !routeTracker.drawBonusOverlay});
     }
 
     draw() {
@@ -69,7 +70,7 @@ class ROUTETRACKER {
             for(let x = 0; x < this.trackerData[y].length; x++) {
                 noStroke();
                 textAlign(CENTER, CENTER);
-                textSize(32);
+                textSize(26 * this.scale);
                 fill(0);
                 let mousePos = this.getMousePos(x,y);
                 if(mousePos.x == 0) mousePos.y += 5 * this.scale;

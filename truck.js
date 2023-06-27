@@ -18,7 +18,7 @@ class TRUCK {
         let mousePos = this.getAnimatedTruckPos();
         if (mousePos) {
             stroke(80);
-            strokeWeight(10);
+            strokeWeight(map.GRID_SIZE/ 10);
             strokeCap(ROUND);
             line(mousePos.x + map.GRID_SIZE / 2, mousePos.y + map.GRID_SIZE / 2, mousePos.fromPosX + map.GRID_SIZE / 2, mousePos.fromPosY + map.GRID_SIZE / 2);
         }
