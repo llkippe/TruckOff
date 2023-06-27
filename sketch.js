@@ -1,8 +1,15 @@
+/*
+bugs:
+  - when promotingh d8 d6 is promoted
+*/
+
 
 const ANIMATION_TIME = 1;
-let highlightImg;
+let selectedImg;
+let confirmedImg;
 let warningImg;
-let diceHighlight;
+let rerollImg;
+let promoHighlightImg;
 
 
 let fontReg;
@@ -103,9 +110,11 @@ function preload() {
   movestartBonusImg = loadImage("imgs/movestart.png");
   fivedollarBonusImg = loadImage("imgs/fivedollarbonus.png");
 
-  highlightImg = loadImage("imgs/highlight4.png");
-  warningImg = loadImage("imgs/warning3.png");
-  diceHighlight = loadImage("imgs/highlightDice6.png");
+  selectedImg = loadImage("imgs/selected.png")
+  confirmedImg = loadImage("imgs/confirmed.png");
+  warningImg = loadImage("imgs/warning.png");
+  rerollImg = loadImage("imgs/diceHighlight.png");
+  promoHighlightImg = loadImage("imgs/highlightDice6.png");
 }
 
 
@@ -150,7 +159,7 @@ function initGame() {
   dollarbonus = 0;
   score = 0;
   
- textFont(fontThick);
+  textFont(fontThick);
 }
 
 function endOfGameInit() {

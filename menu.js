@@ -34,7 +34,7 @@ class MENU {
             const size = this.getSizeOfTruck();
             if(dist(pos.x + size/2, pos.y + size/2, mouseX, mouseY) <= size/2) {
                 chosenTruckImg = this.truckImgs[i];
-                gamestate = "chose starting position"
+                map.choseStartingPositionInit();
                 return;
             }
         }

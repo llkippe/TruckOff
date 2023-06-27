@@ -13,6 +13,7 @@ class MAP {
 
         this.warningPos = [];
         this.markedPos = null;
+        this.selectedPos = [];
         this.truckPaths = null;
 
         this.bridges = [];
@@ -25,20 +26,20 @@ class MAP {
         rect(0, this.getRawYPos(), mapImg.width * this.scale, mapImg.height * this.scale);
         this.drawBridges();
         image(mapImg, 0, this.getRawYPos(),mapImg.width * this.scale, mapImg.height * this.scale);
-        //this.drawGrid();
+        
         if(this.truck) this.truck.getAnimatedTruckPos();
         this.drawTruckLines();
         if (this.truck) this.truck.draw();
         
         this.drawMarkedPos();
-        this.drawTruckPathLocations();
+        this.drawSelectedPos();
         this.drawWarningPos();
         this.drawGasStations();
     }
 
     drawMarkedPos() {
         if (this.markedPos) {
-            this.highlightPosition(this.markedPos, "selected");
+            this.highlightPosition(this.markedPos, "confirmed");
         }
     }
 
@@ -47,6 +48,14 @@ class MAP {
             this.highlightPosition(this.warningPos[i], "warning");
         }
     }
+
+    drawSelectedPos() {
+        for (let i = 0; i < this.selectedPos.length; i++) {
+            if(JSON.stringify(this.selectedPos[i]) != JSON.stringify(this.markedPos))  this.highlightPosition(this.selectedPos[i], "selected");
+        }
+    }
+
+
 
     drawGrid() {
         let mapPos = this.getMapPosition();
@@ -59,14 +68,14 @@ class MAP {
         }
     }
 
-    drawTruckPathLocations() {
+   /* drawTruckPathLocations() {
         if (this.truckPaths) {
-
             for (const [key, value] of this.truckPaths.entries()) {
-                this.highlightPosition(value[value.length - 1]);
+                const endPos = value[value.length - 1];
+                if(JSON.stringify(endPos) != JSON.stringify(this.markedPos)) this.highlightPosition(endPos, "selected");
             }
         }
-    }
+    }*/
 
     drawTruckLines() {
         for (let i = 0; i < this.truckLines.length; i++) {
@@ -111,22 +120,13 @@ class MAP {
 
     highlightPosition(gridPos, type) { // normal, warning, selected
         let mousePos = this.gridToMousePosition(gridPos);
-
         if(type == "warning") {
             image(warningImg, mousePos.x, mousePos.y, this.GRID_SIZE, this.GRID_SIZE);
-            return;
+        }else if(type == "selected") {
+            image(selectedImg, mousePos.x, mousePos.y, this.GRID_SIZE, this.GRID_SIZE);
+        }else {
+            image(confirmedImg, mousePos.x, mousePos.y, this.GRID_SIZE, this.GRID_SIZE);
         }
-        if(type == "selected") {
-            noFill();
-            stroke(0,200);
-            strokeWeight(5);
-            const plusSize = 2;
-            circle(mousePos.x + this.GRID_SIZE / 2 - plusSize/2, mousePos.y + this.GRID_SIZE / 2 - plusSize/2, this.GRID_SIZE + plusSize);
-            return;
-        }
-        tint(220);
-        image(highlightImg, mousePos.x, mousePos.y, this.GRID_SIZE, this.GRID_SIZE);
-        tint(255);
     }
 
 
@@ -154,6 +154,16 @@ class MAP {
         if (!this.posInGrid(gridPos)) return;
         if (gamestate == "chose starting position") this.choseStartingPosition(gridPos);
         if (gamestate == "move truck") this.moveTruck(gridPos);
+    }  
+
+    choseStartingPositionInit() {
+        gamestate = "chose starting position";
+        for(let y = 0; y < this.mapData.length; y++) {
+            for(let x = 0; x < this.mapData[y].length; x++) {
+                const pos = {x: x, y: y};
+                if(this.isStartingPosition(pos)) this.selectedPos.push(pos);
+            }
+        }
     }
 
     choseStartingPosition(gridPos) {
@@ -161,6 +171,7 @@ class MAP {
             if (JSON.stringify(gridPos) === JSON.stringify(this.markedPos)) {
                 this.truck = new TRUCK(gridPos);
                 this.markedPos = null;
+                this.selectedPos = [];
                 dice.rollingDiceInit();
             } else this.markedPos = gridPos;
         }
@@ -168,6 +179,9 @@ class MAP {
 
     moveTruckInit() {
         this.truckPaths = this.truck.findPathsToVenues(this.truck.pos);
+        for (const [key, value] of this.truckPaths.entries()) {
+            this.selectedPos.push(value[value.length - 1]);
+        }
         gamestate = "move truck";
     }
     moveTruck(gridPos) {
@@ -176,6 +190,7 @@ class MAP {
                 this.truck.moveTruck(this.truckPaths.get(JSON.stringify(gridPos)));
                 this.markedPos = null;
                 this.truckPaths = null;
+                this.selectedPos = [];
                 this.warningPos = [];
             } else {
                 this.markedPos = gridPos;
@@ -183,7 +198,6 @@ class MAP {
                 for (let i = 0; i < path.length - 1; i++) {
                     if (this.isActiveVenue(path[i])) this.warningPos.push(path[i]);
                 }
-
             }
         }
     }
@@ -215,7 +229,7 @@ class MAP {
 
     isStartingPosition(gridPos) {
         if (!this.posInGrid(gridPos)) return false;
-        return this.mapData[gridPos.y][gridPos.x].includes("s")
+        return this.mapData[gridPos.y][gridPos.x].includes("s");
     }
 
     isVenue(gridPos) {

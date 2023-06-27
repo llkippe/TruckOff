@@ -64,12 +64,11 @@ class DICE {
 
 
         let dicePos = this.getMousePosOfDice(dice);
-        const highlightSize = this.height * 1.2;
-        tint(170);
-        if(gamestate == "rerolling dice") image(diceHighlight, dicePos.x - this.height*0.1, dicePos.y - this.height*0.1, highlightSize, highlightSize);
-        tint(255);
-        image(this.imgs[dice], dicePos.x, dicePos.y, this.height, this.height);
         
+        image(this.imgs[dice], dicePos.x, dicePos.y, this.height, this.height);
+        const highlightSize = this.height/3;
+        if(gamestate == "rerolling dice") image(rerollImg, dicePos.x + highlightSize/5, dicePos.y + highlightSize/5, highlightSize, highlightSize);
+
         // Calculate the center position of the current image
         let centerX = dicePos.x + this.height / 2;
         let centerY = dicePos.y + this.height / 2;
