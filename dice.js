@@ -1,7 +1,7 @@
 class DICE {
     constructor() {
         this.width = width;
-        this.height = height/15;
+        this.height = height/13;
         this.pos = {
             x: 0,
             y: map.getRawYPos() - this.height
