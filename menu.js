@@ -16,6 +16,12 @@ class MENU {
             const size = this.getSizeOfTruck();
             image(this.truckImgs[i], pos.x, pos.y, size, size);
         }
+
+        textAlign(CENTER);
+        noStroke();
+        fill(245);
+        textSize(height/50);
+        text("Collect as many sales as you can.", width/2, height*9/10);
     }
 
     getPositionOfTruck(i) {
