@@ -4,7 +4,12 @@ class MENU {
     }
 
     draw() {
-        image(logoImg, 0,0, width);
+        fill(68, 52, 123);
+        rect(0,0,width,height);
+
+        const scale = width/ mainLogoImg.width;
+
+        image(mainLogoImg, 0,height/20, mainLogoImg.width * scale, mainLogoImg.height * scale);
         
         for(let i = 0; i < this.truckImgs.length; i++) {
             const pos = this.getPositionOfTruck(i);

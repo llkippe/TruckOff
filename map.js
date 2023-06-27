@@ -1,11 +1,11 @@
 class MAP {
-    constructor(img) {
-        this.img = img;
-        this.scale = width / img.width;
-        //this.img.resize(img.width * this.scale, img.height * this.scale);
+    constructor() {
+
+        this.scale = width / mapImg.width;
+        //mapImg.resize(img.width * this.scale, img.height * this.scale);
         this.BORDER_X = 60 * this.scale;
         this.BORDER_Y = 40 * this.scale;
-        this.GRID_SIZE = (this.img.width * this.scale - this.BORDER_X * 2) / 10;
+        this.GRID_SIZE = (mapImg.width * this.scale - this.BORDER_X * 2) / 10;
 
         this.mapData = this.createMapData();
         this.truck = null;
@@ -22,9 +22,9 @@ class MAP {
     draw() {
         fill(150, 185, 199);
         noStroke();
-        rect(0, this.getRawYPos(), this.img.width * this.scale, this.img.height * this.scale);
+        rect(0, this.getRawYPos(), mapImg.width * this.scale, mapImg.height * this.scale);
         this.drawBridges();
-        image(this.img, 0, this.getRawYPos(),this.img.width * this.scale, this.img.height * this.scale);
+        image(mapImg, 0, this.getRawYPos(),mapImg.width * this.scale, mapImg.height * this.scale);
         //this.drawGrid();
         if(this.truck) this.truck.getAnimatedTruckPos();
         this.drawTruckLines();
@@ -323,7 +323,7 @@ class MAP {
     }
 
     getRawYPos() {
-        return height - this.img.height * this.scale;
+        return height - mapImg.height * this.scale;
     }
 
     posInGrid(gridPos) {

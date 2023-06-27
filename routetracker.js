@@ -1,6 +1,5 @@
 class ROUTETRACKER {
     constructor() {
-        this.routeTrackerImg = routeTrackerImg;
         this.padding = 15;
         this.scale = (width - this.padding*2) / routeTrackerImg.width;
         this.posY = venuePromotions.height;
@@ -19,6 +18,9 @@ class ROUTETRACKER {
         this.finalOffset = -1;
         this.animation = null;
         this.trackerYBefore = 0;
+
+        this.drawBonusOverlay = false;
+        this.overlayButton = new BUTTON(this.width - 90,this.height-90 + this.posY,70,70,15,10,6,color(50),color(244,131,36),color(255),"?",function() {routeTracker.drawBonusOverlay = !routeTracker.drawBonusOverlay});
     }
 
     draw() {
@@ -27,6 +29,7 @@ class ROUTETRACKER {
         rect(0,this.posY,this.width,this.height);
 
         this.drawRouteTracker();
+        this.overlayButton.draw();
 
         //drawGradientRect(0, this.posY + this.height - this.padding + 8, this.width, this.padding - 8, color(68, 52, 123), color(0,0,0));
         stroke(0);
@@ -58,7 +61,9 @@ class ROUTETRACKER {
 
         
 
-        image(this.routeTrackerImg, this.padding, this.padding + this.posY - yOffset, this.routeTrackerImg.width * this.scale, this.routeTrackerImg.height * this.scale);
+        image(routeTrackerImg, this.padding, this.padding + this.posY - yOffset, routeTrackerImg.width * this.scale, routeTrackerImg.height * this.scale);
+        if(this.drawBonusOverlay) image(bonusOverlayRowImg, this.padding, this.padding + this.posY - yOffset, bonusOverlayRowImg.width * this.scale, bonusOverlayRowImg.height * this.scale);
+        
 
         for(let y = 0; y < this.trackerData.length; y++) {
             for(let x = 0; x < this.trackerData[y].length; x++) {
@@ -85,6 +90,13 @@ class ROUTETRACKER {
             image(img, width - size/2, venuePromotions.height/2, size, size);
         }
         imageMode(CORNER);
+    }
+    drawBonusOverlayCol() {
+        const w = bonusOverlayColImg.width * this.scale;
+        const h = bonusOverlayColImg.height * this.scale;
+        if(this.drawBonusOverlay) {
+            image(bonusOverlayColImg,this.padding, this.padding + this.posY + this.height , w,h);
+        }
     }
 
     getMousePos(gridX, gridY) {
@@ -223,7 +235,7 @@ class ROUTETRACKER {
 
 
     fitsRouteTrackerOnScreen(offset) {
-        return this.posY + this.height - this.padding - 10 >= this.posY + this.routeTrackerImg.height - offset;
+        return this.posY + this.height - this.padding - 10 >= this.posY + routeTrackerImg.height - offset;
     }
 
     calculateScore() {

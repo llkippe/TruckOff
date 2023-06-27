@@ -1,5 +1,5 @@
 class DICE {
-    constructor(img4,img6,img8,img10,img12,img20) {
+    constructor() {
         this.width = width;
         this.height = 150;
         this.pos = {
@@ -8,7 +8,7 @@ class DICE {
         }
 
         this.imgs = [];
-        this.imgs.push(img4,img6,img8,img10,img12,img20);
+        this.imgs.push(diceImg4,diceImg6,diceImg8,diceImg10,diceImg12,diceImg20);
 
         this.numbers = [];
         this.numbers.push(4,6,8,10,12,20);
@@ -24,15 +24,17 @@ class DICE {
     }
 
     draw() {
+        
         noStroke();
         
         fill(225,224,213);
         fill(68, 52, 123);
         rect(this.pos.x, this.pos.y, this.width, this.height);
-
+        if(!routeTracker.drawBonusOverlay ) {
         for (let i = 0; i < this.imgs.length; i++) {
             this.drawDice(i, this.numbers[i]);
         }
+    }
     }
 
     drawDice(dice, number) {
@@ -89,6 +91,7 @@ class DICE {
     
     rollingDiceInit() {
         gamestate = "rolling dice";
+        routeTracker.drawBonusOverlay = false;
         this.animation = new ANIMATION(this.animationDuration,0,"easeOutCubic");
         this.diceRerolled = 0;
     }
