@@ -1,17 +1,17 @@
 /*
-- fix bridge into map
-- first bonus show in top right
-- higlight diffrent vis
-- faq in menu
+- ? for bonuses
 */
 
 const ANIMATION_TIME = 1;
+let highlightImg;
+let warningImg;
+let diceHighlight;
+
 
 let fontReg;
 let fontRegCom;
 let fontThick;
 let fontThickCom;
-
 
 let chosenTruckImg;
 let truck1Img;
@@ -53,6 +53,7 @@ let venuePromotions;
 let gamestate = "menu";
 
 let score = 0;
+let animation;
 let dollarbonus = 0;
 
 let menu;
@@ -92,6 +93,10 @@ function preload() {
   rerollBonusImg = loadImage("imgs/reroll.png");
   movestartBonusImg = loadImage("imgs/movestart.png");
   fivedollarBonusImg = loadImage("imgs/fivedollarbonus.png");
+
+  highlightImg = loadImage("imgs/highlight4.png");
+  warningImg = loadImage("imgs/warning3.png");
+  diceHighlight = loadImage("imgs/highlightDice6.png");
 }
 
 
@@ -111,13 +116,27 @@ function draw() {
     dice.draw();
     routeTracker.drawActiveBonus();
     venuePromotions.draw();
+    routeTracker.drawActiveBonusIcon();
     fill(0)
-  text(score, 60, 60);
+    text(score, 60, 60);
+
+    if(gamestate == "game ended") {
+      const x = width/5.0;
+      const y = height * 3.0 / 5.0;
+      const w = width * 3.0/5.0;
+      const h = height/6;
+
+      const animT = animation.getAnimationTime();
+      fill(68, 52, 123, animT*255);
+      rect(x,y,w,h,10);
+      fill(255, animT*255);
+      textAlign(CENTER);
+      textSize(50);
+      text("You're Score: " + score,x + w/2, y + h*1/4);
+      text("tap to start",x + w/2, y + h*3/4);
+
+    }
   }
-
-  
-
-  
 }
 
 
@@ -127,17 +146,29 @@ function initGame() {
   dice = new DICE(diceImg4, diceImg6, diceImg8, diceImg10, diceImg12, diceImg20);
   venuePromotions = new VENUEPROMOTIONS();
   routeTracker = new ROUTETRACKER();
+  animation = null;
+  gamestate = "menu"
+  dollarbonus = 0;
+  score = 0;
   
  textFont(fontThick);
 }
 
 function endOfGameInit() {
   gamestate = "game ended";
+  animation = new ANIMATION(2.5, 0.3, "easeOutCubic");
 }
 
 function touchEnded() {
+  if(gamestate == "game ended") {
+    initGame();
+  }else if(gamestate == "menu") menu.handleInput(mouseX, mouseY)
+  else {
+
+  }
+
   map.handleInput(mouseX, mouseY);
-  if(gamestate == "menu") menu.handleInput(mouseX, mouseY);
+  
   if(gamestate == "rerolling dice") dice.handleInput(mouseX, mouseY);
   if(gamestate == "route tracking") routeTracker.handleInput(mouseX,mouseY);
   if(gamestate == "handle bonuses") routeTracker.handleBonusInput(mouseX, mouseY);

@@ -6,6 +6,10 @@ class BONUS {
         console.log(img);
     }
 
+    start() {
+        this.animation = new ANIMATION(2.5,0,"easePlateau");
+    }
+
     handleInput(mouseX, mouseY) {
 
     }
@@ -47,7 +51,11 @@ class BRIDGE_BONUS extends BONUS {
         }
 
         if(map.bridgeAllowed(this.selectedPos, gridPos)) {
-            map.addBridge(this.selectedPos,gridPos);
+            const positions = [this.selectedPos, gridPos];
+            positions.sort((a, b) => a.x - b.x);
+            positions.sort((a, b) => a.y - b.y);
+
+            map.addBridge(positions[0], positions[1]);
             routeTracker.removeFirstBonus();
             return;
         }
@@ -131,10 +139,11 @@ class PROMOTE_VENUE_BONUS extends BONUS {
             console.log(promo)
             venuePromotions.promoteVenue(promo);
             routeTracker.removeFirstBonus();
+            venuePromotions.highlights = false;
         }
     } 
     act() {
-
+        venuePromotions.highlights = true;
     }
 }
 

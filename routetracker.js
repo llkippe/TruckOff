@@ -2,8 +2,7 @@ class ROUTETRACKER {
     constructor() {
         this.routeTrackerImg = routeTrackerImg;
         this.padding = 15;
-        this.scale = (width - this.padding*2) / this.routeTrackerImg.width;
-        this.routeTrackerImg.resize(this.routeTrackerImg.width*this.scale, this.routeTrackerImg.height*this.scale);
+        this.scale = (width - this.padding*2) / routeTrackerImg.width;
         this.posY = venuePromotions.height;
         this.width = width;
         this.height = dice.pos.y - this.posY;
@@ -29,7 +28,10 @@ class ROUTETRACKER {
 
         this.drawRouteTracker();
 
-        drawGradientRect(0, this.posY + this.height - this.padding + 8, this.width, this.padding - 8, color(68, 52, 123), color(225,224,213));
+        //drawGradientRect(0, this.posY + this.height - this.padding + 8, this.width, this.padding - 8, color(68, 52, 123), color(0,0,0));
+        stroke(0);
+        strokeWeight(5);
+        line(0, this.posY + this.height, this.width, this.posY + this.height)
     }
 
     
@@ -56,7 +58,7 @@ class ROUTETRACKER {
 
         
 
-        image(this.routeTrackerImg, this.padding, this.padding + this.posY - yOffset);
+        image(this.routeTrackerImg, this.padding, this.padding + this.posY - yOffset, this.routeTrackerImg.width * this.scale, this.routeTrackerImg.height * this.scale);
 
         for(let y = 0; y < this.trackerData.length; y++) {
             for(let x = 0; x < this.trackerData[y].length; x++) {
@@ -74,6 +76,15 @@ class ROUTETRACKER {
         if(this.bonuses.length > 0) {
             this.bonuses[0].draw();
         }
+    }
+    drawActiveBonusIcon() {
+        imageMode(CENTER);
+        if(this.bonuses.length > 0) {
+            const img = this.bonuses[0].img;
+            const size = venuePromotions.height - 10;
+            image(img, width - size/2, venuePromotions.height/2, size, size);
+        }
+        imageMode(CORNER);
     }
 
     getMousePos(gridX, gridY) {
@@ -146,7 +157,7 @@ class ROUTETRACKER {
             this.trackerPos.y ++;
             this.animation = new ANIMATION(1.5, 0, "easeInOutCubic");
         }
-        if(this.trackerPos.y > 5) endOfGameInit();
+        if(this.trackerPos.y > 5 && this.bonuses.length == 0) endOfGameInit();
     }
 
     handleBonusesInit(trackerPos) {
@@ -177,8 +188,12 @@ class ROUTETRACKER {
 
     removeFirstBonus() {
         this.bonuses.shift();
-        console.log("removed first", this.bonuses);
-        if(this.bonuses.length == 0) dice.rollingDiceInit();
+        if(this.bonuses.length == 0) {
+            if(this.trackerPos.y > 5) endOfGameInit();
+            else dice.rollingDiceInit();
+            return;
+        }
+        this.bonuses[0].start();
     }
 
     addBonusForRow(y) {

@@ -2,10 +2,10 @@ class MAP {
     constructor(img) {
         this.img = img;
         this.scale = width / img.width;
-        this.img.resize(img.width * this.scale, img.height * this.scale);
+        //this.img.resize(img.width * this.scale, img.height * this.scale);
         this.BORDER_X = 60 * this.scale;
         this.BORDER_Y = 40 * this.scale;
-        this.GRID_SIZE = (this.img.width - this.BORDER_X * 2) / 10;
+        this.GRID_SIZE = (this.img.width * this.scale - this.BORDER_X * 2) / 10;
 
         this.mapData = this.createMapData();
         this.truck = null;
@@ -22,9 +22,9 @@ class MAP {
     draw() {
         fill(150, 185, 199);
         noStroke();
-        rect(0, this.getRawYPos(), this.img.width, this.img.height);
+        rect(0, this.getRawYPos(), this.img.width * this.scale, this.img.height * this.scale);
         this.drawBridges();
-        image(this.img, 0, this.getRawYPos());
+        image(this.img, 0, this.getRawYPos(),this.img.width * this.scale, this.img.height * this.scale);
         //this.drawGrid();
         if(this.truck) this.truck.getAnimatedTruckPos();
         this.drawTruckLines();
@@ -38,19 +38,13 @@ class MAP {
 
     drawMarkedPos() {
         if (this.markedPos) {
-            fill(255, 100);
-            noStroke();
-            let mousePos = this.gridToMousePosition(this.markedPos);
-            circle(mousePos.x + this.GRID_SIZE / 2, mousePos.y + this.GRID_SIZE / 2, this.GRID_SIZE);
+            this.highlightPosition(this.markedPos, "selected");
         }
     }
 
     drawWarningPos() {
         for (let i = 0; i < this.warningPos.length; i++) {
-            const mousePos = this.gridToMousePosition(this.warningPos[i]);
-            fill(255, 0, 0, 150);
-            noStroke();
-            circle(mousePos.x + this.GRID_SIZE / 2, mousePos.y + this.GRID_SIZE / 2, this.GRID_SIZE * 3.0 / 4.0);
+            this.highlightPosition(this.warningPos[i], "warning");
         }
     }
 
@@ -115,11 +109,24 @@ class MAP {
         }
     }
 
-    highlightPosition(gridPos) {
-        fill(200, 200, 255, 170);
-        noStroke();
+    highlightPosition(gridPos, type) { // normal, warning, selected
         let mousePos = this.gridToMousePosition(gridPos);
-        circle(mousePos.x + this.GRID_SIZE / 2, mousePos.y + this.GRID_SIZE / 2, this.GRID_SIZE / 2);
+
+        if(type == "warning") {
+            image(warningImg, mousePos.x, mousePos.y, this.GRID_SIZE, this.GRID_SIZE);
+            return;
+        }
+        if(type == "selected") {
+            noFill();
+            stroke(240,230);
+            strokeWeight(8);
+            const plusSize = 5;
+            circle(mousePos.x + this.GRID_SIZE / 2 - plusSize/2, mousePos.y + this.GRID_SIZE / 2 - plusSize/2, this.GRID_SIZE + plusSize);
+            return;
+        }
+        tint(220);
+        image(highlightImg, mousePos.x, mousePos.y, this.GRID_SIZE, this.GRID_SIZE);
+        tint(255);
     }
 
 
@@ -268,11 +275,11 @@ class MAP {
     addBridge(gridPos1, gridPos2) {
         this.bridges.push({ fromPos: gridPos1, toPos: gridPos2 });
         if (gridPos1.y == gridPos2.y) {
-            this.mapData[gridPos1.y][gridPos1.x] = this.mapData[gridPos1.y][gridPos1.x].replace("1", "");
-            this.mapData[gridPos2.y][gridPos2.x] = this.mapData[gridPos2.y][gridPos2.x].replace("3", "");
+            this.mapData[gridPos1.y][gridPos1.x] = this.mapData[gridPos1.y][gridPos1.x].replace("4", "");
+            this.mapData[gridPos2.y][gridPos2.x] = this.mapData[gridPos2.y][gridPos2.x].replace("2", "");
         } else if (gridPos1.x == gridPos2.x) {
-            this.mapData[gridPos1.y][gridPos1.x] = this.mapData[gridPos1.y][gridPos1.x].replace("2", "");
-            this.mapData[gridPos2.y][gridPos2.x] = this.mapData[gridPos2.y][gridPos2.x].replace("4", "");
+            this.mapData[gridPos1.y][gridPos1.x] = this.mapData[gridPos1.y][gridPos1.x].replace("3", "");
+            this.mapData[gridPos2.y][gridPos2.x] = this.mapData[gridPos2.y][gridPos2.x].replace("1", "");
         }
     }
 
@@ -316,7 +323,7 @@ class MAP {
     }
 
     getRawYPos() {
-        return height - this.img.height;
+        return height - this.img.height * this.scale;
     }
 
     posInGrid(gridPos) {
