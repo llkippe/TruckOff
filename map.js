@@ -118,9 +118,9 @@ class MAP {
         }
         if(type == "selected") {
             noFill();
-            stroke(240,230);
-            strokeWeight(8);
-            const plusSize = 5;
+            stroke(0,200);
+            strokeWeight(5);
+            const plusSize = 2;
             circle(mousePos.x + this.GRID_SIZE / 2 - plusSize/2, mousePos.y + this.GRID_SIZE / 2 - plusSize/2, this.GRID_SIZE + plusSize);
             return;
         }

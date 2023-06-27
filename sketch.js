@@ -118,6 +118,7 @@ function draw() {
     venuePromotions.draw();
     routeTracker.drawActiveBonusIcon();
     fill(0)
+    textAlign(CENTER);
     text(score, 60, 60);
 
     if(gamestate == "game ended") {
