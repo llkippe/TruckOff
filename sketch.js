@@ -4,7 +4,7 @@ bugs:
 */
 
 
-const ANIMATION_TIME = 0.1;
+const ANIMATION_TIME = 1;
 let selectedImg;
 let confirmedImg;
 let warningImg;
