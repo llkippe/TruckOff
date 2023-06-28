@@ -119,7 +119,7 @@ class DICE {
     collisionWithDice(mouseX, mouseY) {
         for(let i = 0; i < 6; i++) {
             let dicePos = this.getMousePosOfDice(i);
-            if(dist(dicePos.x, dicePos.y, mouseX, mouseY) <= this.height) {
+            if(dist(dicePos.x + this.height/2, dicePos.y + this.height/2, mouseX, mouseY) <= this.height/2) {
                 return i;
             }
         }

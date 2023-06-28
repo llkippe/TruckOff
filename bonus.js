@@ -163,7 +163,8 @@ class REROLL_BONUS extends BONUS {
 class MOVESTART_BONUS extends BONUS {
     constructor() {
         super(movestartBonusImg);
-        this.selectedPos = null
+        this.selectedPos = null;
+        map.selectStartingPos();
     }
 
     handleInput(mouseX, mouseY) {

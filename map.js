@@ -158,6 +158,9 @@ class MAP {
 
     choseStartingPositionInit() {
         gamestate = "chose starting position";
+        this.selectStartingPos();
+    }
+    selectStartingPos() {
         for(let y = 0; y < this.mapData.length; y++) {
             for(let x = 0; x < this.mapData[y].length; x++) {
                 const pos = {x: x, y: y};
