@@ -132,10 +132,11 @@ function draw() {
     routeTracker.draw();
     map.draw();
     dice.draw();
-    routeTracker.drawActiveBonus();
     venuePromotions.draw();
     routeTracker.drawActiveBonusIcon();
     routeTracker.drawBonusOverlayCol();
+    routeTracker.drawActiveBonus();
+
     fill(255)
     textAlign(CENTER);
     textSize(width/20);
