@@ -176,7 +176,7 @@ class ROUTETRACKER {
     handleBonusesInit(trackerPos) {
         let count = 0;
         for(let x = 0; x < 6; x++) {
-            if(this.trackerData[trackerPos.y][x] != ' ') count++; 
+            if(this.saleEntried(x,trackerPos.y)) count++; 
         }
         if(count == 3) {
             this.addBonusForRow(trackerPos.y);
@@ -186,7 +186,7 @@ class ROUTETRACKER {
         count = 0;
 
         for(let y = 0; y < 6; y++) {
-            if(this.trackerData[y][trackerPos.x] != ' ') count++; 
+            if(this.saleEntried(trackerPos.x,y)) count++; 
         }
         if(count == 3) {
             this.addBonusForCol(trackerPos.x);
@@ -210,8 +210,8 @@ class ROUTETRACKER {
     }
 
     addBonusForRow(y) {
-        if(y == 0) this.bonuses.push(new MOVESTART_BONUS());
-        //if(y == 0) this.bonuses.push(new BRIDGE_BONUS());
+        //if(y == 0) this.bonuses.push(new MOVESTART_BONUS());
+        if(y == 0) this.bonuses.push(new BRIDGE_BONUS());
         else if(y == 1) this.bonuses.push(new PROMOTE_VENUE_BONUS());
         else if(y == 2) this.bonuses.push(new GAS_BONUS());
         else if(y == 3) this.bonuses.push(new TWOTIMES_BONUS());
@@ -243,7 +243,7 @@ class ROUTETRACKER {
         score = 0;
         for(let y = 0; y < this.trackerData.length; y++) {
             for(let x = 0; x < this.trackerData[y].length; x++) {
-                if(this.trackerData[y][x] != ' ' && this.trackerData[y][x] != 'X') {
+                if(this.saleEntried(x,y)) {
                     score += this.trackerData[y][x];
                 }
             }
@@ -260,9 +260,13 @@ class ROUTETRACKER {
     entriesInCol(x) {
         let number = 0;
         for(let y = 0; y < this.trackerData.length; y++) {
-            if(this.trackerData[y][x] != ' ') number++;
+            if(this.saleEntried(x,y)) number++;
         }
         return number;
+    }
+
+    saleEntried(x,y) {
+        return this.trackerData[y][x] != ' ' && this.trackerData[y][x] != 'X';
     }
 
     
