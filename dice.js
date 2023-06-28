@@ -69,6 +69,8 @@ class DICE {
         const highlightSize = this.height/3;
         if(gamestate == "rerolling dice") image(rerollImg, dicePos.x + highlightSize/5, dicePos.y + highlightSize/5, highlightSize, highlightSize);
 
+        if(gamestate == "route tracking") image(selectedImg, dicePos.x, dicePos.y, this.height, this.height)
+
         // Calculate the center position of the current image
         let centerX = dicePos.x + this.height / 2;
         let centerY = dicePos.y + this.height / 2;
