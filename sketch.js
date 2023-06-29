@@ -160,7 +160,7 @@ function endOfGameInit() {
   gamestate = "game ended";
   animation = new ANIMATION(2.5, 0.3, "easeOutCubic");
   restartButton = new BUTTON(width/2 - width/5, height*5/7, width*2/5,height/15,15,height/30,6,color(50),color(244,131,36),color(255),"Restart",function(){initGame()});
-  scoreButton = new BUTTON(width/2 - width*3/5 /2, height/2, width*3/5,height/13,15,height/20,6,color(50),color(68, 52, 123),color(255),"You're Score: " + score,function(){});
+  scoreButton = new BUTTON(width/2 - width*3/5 /2, height/2, width*3/5,height/13,15,height/20,6,color(50),color(68, 52, 123),color(255),"Your Score: " + score,function(){});
 }
 
 
