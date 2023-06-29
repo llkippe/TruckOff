@@ -56,7 +56,7 @@ class TRUCK {
 
                 return { x, y, fromPosX: pos0.x, fromPosY: pos0.y };
             } else {
-                routeTracker.routeTrackingInit(map.getVenueType(this.pos), map.is2xBonus(this.pos));
+                routeTracker.routeTrackingInit(map.getVenueType(this.pos), map.get2xBonus(this.pos));
 
                 const fromPos = map.gridToMousePosition(this.animPath[this.lastSegmentIndex]);
                 const toPos = map.gridToMousePosition(this.animPath[segmentIndex]);

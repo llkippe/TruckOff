@@ -322,9 +322,12 @@ class MAP {
         this.mapData[gridPos.y][gridPos.x] += "t";
     }
 
-    is2xBonus(gridPos) {
+    get2xBonus(gridPos) {
         if (!this.posInGrid(gridPos)) return false;
-        return this.mapData[gridPos.y][gridPos.x].includes("t");
+        if(!this.mapData[gridPos.y][gridPos.x].includes("t")) return 1;
+
+        const count = this.mapData[gridPos.y][gridPos.x].split('t').length - 1;
+        return 2 * count;
     }
 
     posOutOfGridSize(pos) {

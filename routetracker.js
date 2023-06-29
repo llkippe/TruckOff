@@ -12,7 +12,7 @@ class ROUTETRACKER {
         this.trackerPos = {x: 0, y: 0};
 
         this.bonuses = [];
-        this.twoTimesBonus = false;
+        this.bonusMult = 1;
 
         this.animRouteTracker = !this.fitsRouteTrackerOnScreen(0);
         this.finalOffset = -1;
@@ -77,6 +77,9 @@ class ROUTETRACKER {
                 if(this.trackerData[y][x]) text(this.trackerData[y][x], mousePos.x, mousePos.y - yOffset);
             }
         }
+
+
+       
     }
     drawActiveBonus() {
         if(this.bonuses.length > 0) {
@@ -123,9 +126,9 @@ class ROUTETRACKER {
         }
     }
 
-    routeTrackingInit(venueType, twoTimesBonus) {
+    routeTrackingInit(venueType, bonusMult) {
         gamestate = "route tracking";
-        this.twoTimesBonus = twoTimesBonus;
+        this.bonusMult = bonusMult;
         this.updateRouteTracker(venueType);
     }
     updateRouteTracker(venueType) {
@@ -143,10 +146,7 @@ class ROUTETRACKER {
 
         while(this.trackerPos.y < 6) {
             if(venueType.id == this.trackerPos.x) {
-                let mult = 1;
-                if(this.twoTimesBonus) mult = 2;
-
-                this.trackerData[this.trackerPos.y][this.trackerPos.x] = dice.numbers[this.trackerPos.x] * mult;
+                this.trackerData[this.trackerPos.y][this.trackerPos.x] = dice.numbers[this.trackerPos.x] * this.bonusMult;
                 this.handleBonusesInit(this.trackerPos);
                 this.moveTracker();
                 if(gamestate == "route tracking") dice.rollingDiceInit(); // and gamestate != "handle bonuses"
@@ -236,7 +236,10 @@ class ROUTETRACKER {
 
 
     fitsRouteTrackerOnScreen(offset) {
-        return this.posY + this.height - this.padding - 10 >= this.posY + routeTrackerImg.height - offset;
+        const limit = this.posY+ this.height - this.padding;
+        const realSize = this.posY + (routeTrackerImg.height * this.scale) + this.padding*2 - offset;
+
+        return limit >= realSize;
     }
 
     calculateScore() {

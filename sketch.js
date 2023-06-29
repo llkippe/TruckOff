@@ -137,10 +137,13 @@ function draw() {
     routeTracker.drawBonusOverlayCol();
     routeTracker.drawActiveBonus();
 
+  
+
     fill(255)
     textAlign(CENTER);
     textSize(width/20);
     text(score, width/18, width/20);
+
 
     if(gamestate == "game ended") {
       drawGameEnded();

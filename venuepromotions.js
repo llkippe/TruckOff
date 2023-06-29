@@ -22,7 +22,8 @@ class VENUEPROMOTIONS {
         for(let x = 0; x < 6; x++) {
             const mousePos = this.getMousePosOfPromo(x);
             const imgIndex = Math.min(x, 2);
-            if(this.highlights) image(promoHighlightImg, mousePos.x, mousePos.y, this.imgs[imgIndex].height * this.scale,this.imgs[imgIndex].height * this.scale);
+            if(this.highlights) image(selectedImg, mousePos.x, mousePos.y, this.imgs[imgIndex].height * this.scale,this.imgs[imgIndex].height * this.scale);
+            
             image(this.imgs[imgIndex], mousePos.x, mousePos.y, this.imgs[imgIndex].width*this.scale,this.imgs[imgIndex].height*this.scale);
         }
         imageMode(CORNER);
