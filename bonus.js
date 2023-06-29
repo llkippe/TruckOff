@@ -3,7 +3,6 @@ class BONUS {
         this.animation = new ANIMATION(2.5,0,"easePlateau");
         this.img = img;
         this.size = width/4;
-        console.log(img);
     }
 
     start() {

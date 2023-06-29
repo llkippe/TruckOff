@@ -4,7 +4,7 @@ bugs:
 */
 
 
-const ANIMATION_TIME = 1;
+const ANIMATION_TIME = 0.2;
 let selectedImg;
 let confirmedImg;
 let warningImg;
@@ -62,6 +62,8 @@ let scoreButton;
 let menu;
 let logoImg;
 let mainLogoImg;
+
+let tutorial;
 
 
 
@@ -127,7 +129,7 @@ function draw() {
     routeTracker.drawBonusOverlayCol();
     routeTracker.drawActiveBonus();
 
-  
+    tutorial.draw();
 
     fill(255)
     textAlign(CENTER);
@@ -148,6 +150,7 @@ function initGame() {
   dice = new DICE(diceImg4, diceImg6, diceImg8, diceImg10, diceImg12, diceImg20);
   venuePromotions = new VENUEPROMOTIONS();
   routeTracker = new ROUTETRACKER();
+  tutorial = new TUTORIAL();
   animation = null;
   gamestate = "menu"
   dollarbonus = 0;
@@ -158,7 +161,7 @@ function initGame() {
 
 function endOfGameInit() {
   gamestate = "game ended";
-  animation = new ANIMATION(2.5, 0.3, "easeOutCubic");
+  animation = new ANIMATION(1, 0.3, "easeOutCubic");
   restartButton = new BUTTON(width/2 - width/5, height*5/7, width*2/5,height/15,15,height/30,6,color(50),color(244,131,36),color(255),"Restart",function(){initGame()});
   scoreButton = new BUTTON(width/2 - width*3/5 /2, height/2, width*3/5,height/13,15,height/20,6,color(50),color(68, 52, 123),color(255),"Your Score: " + score,function(){});
 }
@@ -171,10 +174,10 @@ function drawGameEnded() {
   fill(0,40*animT);
   rect(0,0,width,height);
 
-  scoreButton.setOpacity(animT*255);
+  scoreButton.setOpacity(animT);
   scoreButton.draw();
 
-  restartButton.setOpacity(animT*255);
+  restartButton.setOpacity(animT);
   restartButton.draw();
 }
 

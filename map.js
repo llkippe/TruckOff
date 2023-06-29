@@ -159,6 +159,7 @@ class MAP {
     choseStartingPositionInit() {
         gamestate = "chose starting position";
         this.selectStartingPos();
+        tutorial.updateButton();
     }
     selectStartingPos() {
         for(let y = 0; y < this.mapData.length; y++) {
@@ -186,6 +187,7 @@ class MAP {
             this.selectedPos.push(value[value.length - 1]);
         }
         gamestate = "move truck";
+        tutorial.updateButton();
     }
     moveTruck(gridPos) {
         if (this.isTruckPathPosition(gridPos)) {
@@ -195,6 +197,7 @@ class MAP {
                 this.truckPaths = null;
                 this.selectedPos = [];
                 this.warningPos = [];
+                tutorial.removeCurrentButton();
             } else {
                 this.markedPos = gridPos;
                 const path = this.truckPaths.get(JSON.stringify(gridPos));

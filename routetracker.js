@@ -141,6 +141,7 @@ class ROUTETRACKER {
         }
 
         if(venueType.color == "wild") {
+            tutorial.updateButton();
             return;
         }
 
@@ -180,8 +181,8 @@ class ROUTETRACKER {
         }
         if(count == 3) {
             this.addBonusForRow(trackerPos.y);
-            console.log(trackerPos.y, this.bonuses);
             gamestate = "handle bonuses";
+            tutorial.updateButton();
         }
         count = 0;
 
@@ -190,8 +191,8 @@ class ROUTETRACKER {
         }
         if(count == 3) {
             this.addBonusForCol(trackerPos.x);
-            console.log(trackerPos.y, this.bonuses);
             gamestate = "handle bonuses";
+            tutorial.updateButton();
         }
     }
 
@@ -201,12 +202,14 @@ class ROUTETRACKER {
 
     removeFirstBonus() {
         this.bonuses.shift();
+        tutorial.removeCurrentButton();
         if(this.bonuses.length == 0) {
             if(this.trackerPos.y > 5) endOfGameInit();
             else dice.rollingDiceInit();
             return;
         }
         this.bonuses[0].start();
+        tutorial.updateButton();
     }
 
     addBonusForRow(y) {

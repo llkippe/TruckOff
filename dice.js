@@ -54,6 +54,7 @@ class DICE {
                 this.previousStep = 0;
                 if(gamestate == "rolling dice") {
                     gamestate = "rerolling dice";
+                    tutorial.updateButton();
                 }
                 else {
                     this.diceRerolled++;
@@ -92,6 +93,7 @@ class DICE {
     
     rollingDiceInit() {
         gamestate = "rolling dice";
+        tutorial.removeCurrentButton();
         routeTracker.drawBonusOverlay = false;
         this.animation = new ANIMATION(this.animationDuration,0,"easeOutCubic");
         this.diceRerolled = 0;
@@ -115,6 +117,7 @@ class DICE {
         if(dice != null) {
             this.animation = new ANIMATION(this.animationDuration,0,"easeOutCubic");
             this.diceToReroll = dice;
+            tutorial.removeCurrentButton();
         }
     }
 
