@@ -9,13 +9,8 @@ let selectedImg;
 let confirmedImg;
 let warningImg;
 let rerollImg;
-let promoHighlightImg;
 
-
-let fontReg;
-let fontRegCom;
 let fontThick;
-let fontThickCom;
 
 let chosenTruckImg;
 let truck1Img;
@@ -71,12 +66,8 @@ let mainLogoImg;
 
 
 function preload() {
-  //fontReg = loadFont("fonts/Font_Bureau_-_Interstate-Regular.otf");
-  //fontRegCom = loadFont("fonts/Font_Bureau_-_Interstate-RegularCompressed.otf");
- // fontThickCom = loadFont("/fonts/Font_Bureau_-_Interstate-BlackCompressed.otf");
   fontThick = loadFont("fonts/FontBureau.otf");
 
-  logoImg = loadImage("imgs/Logo-03.png");
   mainLogoImg = loadImage("imgs/Logo-04.png");
   mapImg = loadImage("imgs/mapNoWater.png");
 
@@ -114,7 +105,6 @@ function preload() {
   confirmedImg = loadImage("imgs/confirmed.png");
   warningImg = loadImage("imgs/warning.png");
   rerollImg = loadImage("imgs/diceHighlight.png");
-  promoHighlightImg = loadImage("imgs/highlightDice6.png");
 }
 
 

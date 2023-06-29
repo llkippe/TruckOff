@@ -288,6 +288,15 @@ class MAP {
         }
         return false;
     }
+    selectBridges() {
+        for(let y = 0; y < this.mapData.length; y++) {
+            for(let x = 0; x < this.mapData[y].length; x++) {
+                const pos = {x: x, y: y};
+                const sidesWithRiver = this.hasRiverAtSide(pos);
+                if(sidesWithRiver.length > 0) this.selectedPos.push(pos);
+            }
+        }
+    }
 
     addBridge(gridPos1, gridPos2) {
         this.bridges.push({ fromPos: gridPos1, toPos: gridPos2 });
@@ -298,10 +307,12 @@ class MAP {
             this.mapData[gridPos1.y][gridPos1.x] = this.mapData[gridPos1.y][gridPos1.x].replace("3", "");
             this.mapData[gridPos2.y][gridPos2.x] = this.mapData[gridPos2.y][gridPos2.x].replace("1", "");
         }
+        this.selectedPos = [];
     }
 
     addGasStation(gridPos) {
         this.gasStations.push({pos: gridPos});
+        this.selectedPos = [];
     }
 
     isGasStation(gridPos) {
@@ -317,9 +328,18 @@ class MAP {
         }
         return false;
     }
+    selectGasStation() {
+        for(let y = 0; y < this.mapData.length; y++) {
+            for(let x = 0; x < this.mapData[y].length; x++) {
+                const pos = {x: x, y: y};
+                if(!this.isVenue(pos)) this.selectedPos.push(pos);
+            }
+        }
+    }
 
     add2xBonus(gridPos) {
         this.mapData[gridPos.y][gridPos.x] += "t";
+        this.selectedPos = [];
     }
 
     get2xBonus(gridPos) {
@@ -328,6 +348,14 @@ class MAP {
 
         const count = this.mapData[gridPos.y][gridPos.x].split('t').length - 1;
         return 2 * count;
+    }
+    select2xBonus() {
+        for(let y = 0; y < this.mapData.length; y++) {
+            for(let x = 0; x < this.mapData[y].length; x++) {
+                const pos = {x: x, y: y};
+                if(this.isActiveVenue(pos)) this.selectedPos.push(pos);
+            }
+        }
     }
 
     posOutOfGridSize(pos) {

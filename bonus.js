@@ -38,6 +38,7 @@ class BRIDGE_BONUS extends BONUS {
     constructor() {
         super(bridgeBonusImg);
         this.selectedPos = null
+        map.selectBridges();
     }
 
     handleInput(mouseX, mouseY) {
@@ -72,6 +73,7 @@ class GAS_BONUS extends BONUS {
     constructor() {
         super(gasBonusImg);
         this.selectedPos = null
+        map.selectGasStation();
     }
 
     handleInput(mouseX, mouseY) {
@@ -101,7 +103,8 @@ class GAS_BONUS extends BONUS {
 class TWOTIMES_BONUS extends BONUS {
     constructor() {
         super(twotimesBonusImg);
-        this.selectedPos = null
+        this.selectedPos = null;
+        map.select2xBonus();
     }
 
     handleInput(mouseX, mouseY) {
