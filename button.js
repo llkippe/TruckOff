@@ -20,13 +20,14 @@ class BUTTON {
         }
     }
     draw() {
+        rectMode(CORNER);
         fill(red(this.fillColor),green(this.fillColor),blue(this.fillColor),alpha(this.fillColor) * this.opacity);
         stroke(red(this.strokeColor),green(this.strokeColor),blue(this.strokeColor),alpha(this.strokeColor) * this.opacity);
         strokeWeight(this.strokeWidth);
         rect(this.x,this.y,this.w,this.h,this.r);
 
         noStroke();
-        textAlign(CENTER);
+        textAlign(CENTER,CENTER);
         textSize(this.h - this.paddingY);
         fill(red(this.textColor),green(this.textColor),blue(this.textColor),alpha(this.textColor) * this.opacity);
         text(this.text, this.x + this.w/2, this.y + this.h/2);
@@ -34,5 +35,14 @@ class BUTTON {
 
     setOpacity(opacity) {
         this.opacity = opacity;
+    }
+    setFillColor(fillColor) {
+        this.fillColor = fillColor;
+    }
+    setTextColor(textColor) {
+        this.textColor = textColor;
+    }
+    setStrokeColor(strokeColor) {
+        this.strokeColor = strokeColor;
     }
 }

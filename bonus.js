@@ -42,7 +42,6 @@ class BRIDGE_BONUS extends BONUS {
 
     handleInput(mouseX, mouseY) {
         const gridPos = map.mouseToGridPosition(mouseX, mouseY);
-        console.log(gridPos);
         if(!map.posInGrid(gridPos)) return;
 
         if(this.selectedPos == null) {
@@ -77,7 +76,6 @@ class GAS_BONUS extends BONUS {
 
     handleInput(mouseX, mouseY) {
         const gridPos = map.mouseToGridPosition(mouseX, mouseY);
-        console.log(gridPos);
         if(!map.posInGrid(gridPos)) return;
 
         if(this.selectedPos == null || JSON.stringify(this.selectedPos) != JSON.stringify(gridPos)) {
@@ -108,7 +106,6 @@ class TWOTIMES_BONUS extends BONUS {
 
     handleInput(mouseX, mouseY) {
         const gridPos = map.mouseToGridPosition(mouseX, mouseY);
-        console.log(gridPos);
         if(!map.posInGrid(gridPos)) return;
 
         if(this.selectedPos == null || JSON.stringify(this.selectedPos) != JSON.stringify(gridPos)) {
@@ -138,7 +135,6 @@ class PROMOTE_VENUE_BONUS extends BONUS {
     handleInput(mouseX, mouseY){
         const promo = venuePromotions.collisionWithPromo(mouseX,mouseY);
         if(promo != null) {
-            console.log(promo)
             venuePromotions.promoteVenue(promo);
             routeTracker.removeFirstBonus();
             venuePromotions.highlights = false;

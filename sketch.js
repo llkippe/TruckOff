@@ -4,7 +4,7 @@ bugs:
 */
 
 
-const ANIMATION_TIME = 0.2;
+const ANIMATION_TIME = 1;
 let selectedImg;
 let confirmedImg;
 let warningImg;
@@ -64,6 +64,8 @@ let logoImg;
 let mainLogoImg;
 
 let tutorial;
+let tutorialActive = true;
+
 
 
 
@@ -108,6 +110,8 @@ function preload() {
   warningImg = loadImage("imgs/warning.png");
   rerollImg = loadImage("imgs/diceHighlight.png");
 }
+
+
 
 
 function setup() {
@@ -156,6 +160,7 @@ function initGame() {
   dollarbonus = 0;
   score = 0;
   
+  
   textFont(fontThick);
 }
 
@@ -192,8 +197,6 @@ function touchEnded() {
     if(gamestate == "route tracking") routeTracker.handleInput(mouseX,mouseY);
     if(gamestate == "handle bonuses") routeTracker.handleBonusInput(mouseX, mouseY);
   }
-
-  
   event.preventDefault();
 }
 

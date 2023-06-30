@@ -135,7 +135,6 @@ class TRUCK {
             // Check if the current position is a venue
             if (map.isActiveVenue(pos)) {
                 //if(pos.x == 3 && pos.y == 2) 
-                //console.log(path);
                 if (venuePaths.has(JSON.stringify(pos))) { // evalute which path is better (look for shoter venuePaths)
                     const prevPath = venuePaths.get(JSON.stringify(pos));
                     if (map.isPathOverActiveVenue(prevPath)) {
